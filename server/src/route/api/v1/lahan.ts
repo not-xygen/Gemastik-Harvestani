@@ -78,11 +78,12 @@ export async function store(req: Request, res: Response) {
 
   }
 
-  (body as any)['image'] = { create: files }
-
   const model = await prisma.lahan.create({
     data: {
       ...body,
+      image: {
+        create: files ?? undefined
+      },
       user_id: req.user!.userId,
     },
     include: {
