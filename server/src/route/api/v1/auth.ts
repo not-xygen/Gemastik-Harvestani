@@ -1,9 +1,15 @@
 import typia from "typia";
 import prisma from "#/prisma";
 import bcrypt from "bcrypt";
-import { authenticateUser, generateToken } from "./jwt";
+import {
+  authenticateRefreshToken,
+  authenticateUser,
+  createRefreshToken,
+  generateAccessToken,
+  generateRefreshToken,
+} from "./jwt";
 import { Router } from "express";
-import { Response } from "express-serve-static-core";
+import { Request, Response } from "express";
 
 interface RegisterRequest {
   /**
@@ -29,12 +35,11 @@ const checkRegister = typia.createAssert<RegisterRequest>();
 
 export async function register(
   req: Request,
-  res: Response
-  // res: Response<RegisterResponse | { error: string }>,
+  res: Response<RegisterResponse | { error: string }>
 ) {
   let { email, password } = checkRegister((req as any).body);
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password, await bcrypt.genSalt());
 
   try {
     const user = await prisma.user.create({
@@ -44,7 +49,7 @@ export async function register(
       },
     });
 
-    const token = generateToken(user);
+    const token = generateAccessToken(user);
 
     res.json({ token });
   } catch (error) {
@@ -58,11 +63,34 @@ export async function login(req: Request, res: Response) {
   try {
     const user = await authenticateUser(email, password);
 
-    const token = generateToken(user);
+    const refreshToken = await createRefreshToken(user);
 
-    res.json({ token });
+    const token = generateAccessToken(user);
+
+    res.cookie("refresh-token", refreshToken.token);
+    res.json({ token, refreshToken: refreshToken.token });
   } catch (error) {
     res.status(401).json({ error: "Invalid email or password" });
+  }
+}
+
+export async function refreshToken(req: Request, res: Response) {
+  const { refresh_token } = req.cookies;
+
+  const r = await authenticateRefreshToken(refresh_token);
+
+  let user = null;
+
+  if (r) {
+    user = await prisma.user.findUnique({
+      where: { id: r.userId },
+    });
+  }
+
+  if (r && user) {
+    res.json({ token: generateAccessToken(user) });
+  } else {
+    res.status(401).json({ error: "invalid refresh token" });
   }
 }
 
@@ -71,6 +99,7 @@ export function router() {
 
   router.post("/register", register);
   router.post("/login", login);
+  router.post("/refresh", refreshToken);
 
   return router;
 }
