@@ -9,6 +9,7 @@ import {
 } from "./jwt.js";
 import { Router } from "express";
 import { Request, Response } from "express";
+import { User } from "@prisma/client";
 
 interface RegisterRequest {
   /**
@@ -32,6 +33,15 @@ interface RegisterResponse {
 
 const checkRegister = typia.createAssert<RegisterRequest>();
 
+async function loginUser(res: Response, user: User) {
+  const refreshToken = await createRefreshToken(user);
+
+  const token = generateAccessToken(user);
+
+  res.cookie("refresh-token", refreshToken.token);
+  res.json({ token, refreshToken: refreshToken.token });
+}
+
 export async function register(
   req: Request,
   res: Response<RegisterResponse | { error: string }>
@@ -48,9 +58,7 @@ export async function register(
       },
     });
 
-    const token = generateAccessToken(user);
-
-    res.json({ token });
+    return loginUser(res, user)
   } catch (error) {
     res.status(500).json({ error: "An error occurred while signing up" });
   }
@@ -62,12 +70,7 @@ export async function login(req: Request, res: Response) {
   try {
     const user = await authenticateUser(email, password);
 
-    const refreshToken = await createRefreshToken(user);
-
-    const token = generateAccessToken(user);
-
-    res.cookie("refresh-token", refreshToken.token);
-    res.json({ token, refreshToken: refreshToken.token });
+    return loginUser(res, user)
   } catch (error) {
     res.status(401).json({ error: "Invalid email or password" });
   }
