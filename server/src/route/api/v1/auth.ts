@@ -79,12 +79,16 @@ export async function refreshToken(req: Request, res: Response) {
 
   const r = await authenticateRefreshToken(refresh_token);
 
+  let user = null;
+
   if (r) {
-    const user = await prisma.user.findUnique({
+    user = await prisma.user.findUnique({
       where: { id: r.userId },
     });
+  }
 
-    res.json({ token: generateAccessToken(user!) });
+  if (r && user) {
+    res.json({ token: generateAccessToken(user) });
   } else {
     res.status(401).json({ error: "invalid refresh token" });
   }
