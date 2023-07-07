@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 
 import * as auth from "#/route/api/v1/auth.js";
+import * as lahan from "#/route/api/v1/lahan.js";
 import { injectUser } from "#/middleware/auth.js";
 import parseCookie from "cookie-parser";
 import { NextFunction, Request, Response } from "express-serve-static-core";
@@ -15,6 +16,7 @@ app.use(injectUser);
 app.use(parseCookie());
 
 app.use("/api/v1/auth", auth.router());
+app.use("/api/v1/lahan", lahan.router());
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   if (error instanceof TypeGuardError) {
