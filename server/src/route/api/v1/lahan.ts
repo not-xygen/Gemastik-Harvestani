@@ -26,8 +26,8 @@ export async function show(req: Request, res: Response) {
       id,
     },
     include: {
-      image: true
-    }
+      image: true,
+    },
   });
 
   if (model && model.user_id == req.user?.userId) {
@@ -72,23 +72,23 @@ export async function store(req: Request, res: Response) {
   let files: { path: string }[] | null = null;
 
   if (typeof req.files == "object" && !Array.isArray(req.files)) {
-    files = req.files["photo"]?.map((it) => ({
-      path: it.path.replace("public/", ""),
-    })) ?? null;
-
+    files =
+      req.files["photo"]?.map((it) => ({
+        path: it.path.replace("public/", ""),
+      })) ?? null;
   }
 
   const model = await prisma.lahan.create({
     data: {
       ...body,
       image: {
-        create: files ?? undefined
+        create: files ?? undefined,
       },
       user_id: req.user!.userId,
     },
     include: {
-      image: true
-    }
+      image: true,
+    },
   });
 
   res.status(201).json(model);

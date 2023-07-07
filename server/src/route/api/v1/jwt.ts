@@ -52,7 +52,10 @@ export async function authenticateRefreshToken(
     },
   });
 
-  if (model?.hashed_token && (await bcrypt.compare(token, model?.hashed_token))) {
+  if (
+    model?.hashed_token &&
+    (await bcrypt.compare(token, model?.hashed_token))
+  ) {
     return model;
   } else {
     return null;
