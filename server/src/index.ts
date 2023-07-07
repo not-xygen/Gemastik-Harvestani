@@ -17,6 +17,7 @@ app.use(parseCookie());
 
 app.use("/api/v1/auth", auth.router());
 app.use("/api/v1/lahan", lahan.router());
+app.use(express.static("public", {}));
 
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   if (error instanceof TypeGuardError) {
