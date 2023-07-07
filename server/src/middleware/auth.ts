@@ -1,11 +1,11 @@
-import { UserJWT, decodeAccessToken } from "#/route/api/v1/jwt";
-import { Request, Response } from "express-serve-static-core";
+import { UserJWT, decodeAccessToken } from "../route/api/v1/jwt";
+import { Request, Response, NextFunction } from "express-serve-static-core";
 
-export function injectUser(req: Request, res: Response, next: any) {
+export function injectUser(req: Request, res: Response, next: NextFunction) {
   const { authorization } = req.headers;
 
-  if (authorization) {
-    req.user = decodeAccessToken(authorization);
+  if (authorization?.startsWith("Bearer ")) {
+    req.user = decodeAccessToken(authorization.replace("Bearer ", ""));
   }
 
   next();
