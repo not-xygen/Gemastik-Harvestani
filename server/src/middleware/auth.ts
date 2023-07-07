@@ -1,4 +1,4 @@
-import { UserJWT, decodeAccessToken } from "../route/api/v1/jwt";
+import { UserJWT, decodeAccessToken } from "#/route/api/v1/jwt.js";
 import { Request, Response, NextFunction } from "express-serve-static-core";
 
 export function injectUser(req: Request, res: Response, next: NextFunction) {

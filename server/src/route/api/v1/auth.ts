@@ -1,13 +1,12 @@
 import typia from "typia";
-import prisma from "#/prisma";
+import prisma from "#/prisma.js";
 import bcrypt from "bcrypt";
 import {
   authenticateRefreshToken,
   authenticateUser,
   createRefreshToken,
   generateAccessToken,
-  generateRefreshToken,
-} from "./jwt";
+} from "./jwt.js";
 import { Router } from "express";
 import { Request, Response } from "express";
 

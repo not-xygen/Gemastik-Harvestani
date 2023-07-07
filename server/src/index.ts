@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 
-import * as auth from "./route/api/v1/auth";
-import { injectUser } from "./middleware/auth";
+import * as auth from "#/route/api/v1/auth.js";
+import { injectUser } from "#/middleware/auth.js";
 import parseCookie from "cookie-parser"
 
 const app = express();

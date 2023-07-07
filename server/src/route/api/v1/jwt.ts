@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { RefreshToken, User } from "@prisma/client";
-import prisma from "#/prisma";
+import prisma from "#/prisma.js";
 import { randomUUID } from "crypto";
 
 const { APP_SECRET } = process.env;
