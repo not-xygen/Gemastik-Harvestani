@@ -1,16 +1,12 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { User } from "@prisma/client";
-import { GetResult } from "@prisma/client/runtime";
+import { RefreshToken, User } from "@prisma/client";
 import prisma from "#/prisma";
+import { randomUUID } from "crypto";
 
 const { APP_SECRET } = process.env;
 
-function generateToken(user: User): string {
-  return jwt.sign({ userId: user.id }, APP_SECRET!);
-}
-
-async function authenticateUser(
+export async function authenticateUser(
   email: string,
   password: string
 ): Promise<User> {
@@ -29,8 +25,76 @@ async function authenticateUser(
   return user;
 }
 
-function decodeToken(token: string): { userId: string } | null {
-  return jwt.decode(token) as { userId: string } | null
+export interface GeneratedRefreshToken {
+  refreshTokenId: string;
+  token: string;
 }
 
-export { generateToken, authenticateUser };
+export interface SignedRefreshToken {
+  userId: string;
+  refreshTokenId: string;
+}
+
+export async function authenticateRefreshToken(
+  token: string
+): Promise<RefreshToken | null> {
+  let refreshToken = jwt.decode(token) as SignedRefreshToken | null;
+
+  if (refreshToken == null) {
+    return null;
+  }
+
+  let { refreshTokenId }: SignedRefreshToken = refreshToken;
+
+  const model = await prisma.refreshToken.findUnique({
+    where: {
+      id: refreshTokenId,
+    },
+  });
+
+  if (model?.hashedToken && (await bcrypt.compare(token, model?.hashedToken))) {
+    return model;
+  } else {
+    return null;
+  }
+}
+
+export async function createRefreshToken(
+  user: User
+): Promise<GeneratedRefreshToken> {
+  const token = generateRefreshToken(user);
+
+  await prisma.refreshToken.create({
+    data: {
+      id: token.refreshTokenId,
+      hashedToken: await bcrypt.hash(token.token, await bcrypt.genSalt()),
+      userId: user.id,
+    },
+  });
+
+  return token;
+}
+
+export function generateRefreshToken(user: User): GeneratedRefreshToken {
+  const refreshTokenId = randomUUID();
+  const token = jwt.sign({ refreshTokenId, userId: user.id }, APP_SECRET!, {
+    expiresIn: "1w",
+  });
+
+  return {
+    refreshTokenId,
+    token,
+  };
+}
+
+export function generateAccessToken(user: User): string {
+  return jwt.sign({ userId: user.id }, APP_SECRET!);
+}
+
+export function decodeAccessToken(token: string): UserJWT | null {
+  return jwt.decode(token) as UserJWT | null;
+}
+
+export interface UserJWT {
+  userId: string;
+}
