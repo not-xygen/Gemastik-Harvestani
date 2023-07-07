@@ -2,11 +2,13 @@ import express from "express";
 import cors from "cors";
 
 import * as auth from "./route/api/v1/auth";
+import parseCookie from "cookie-parser"
 
 const app = express();
 
 app.use(cors({}));
 app.use(express.json());
+app.use(parseCookie());
 
 app.use("/api/v1/auth", auth.router());
 
