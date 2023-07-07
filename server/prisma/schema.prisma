@@ -17,6 +17,8 @@ model User {
   refreshTokens RefreshToken[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+
+  Lahan         Lahan[]
 }
 
 model RefreshToken {
@@ -29,3 +31,64 @@ model RefreshToken {
   updatedAt   DateTime @updatedAt
 }
 
+model Lahan {
+  id          String @id @unique @default(uuid())
+  userId      String
+  User        User  @relation(fields: [userId], references: [id])
+  nama        String
+  luas        Decimal
+  alamat      String
+  lat         Decimal
+  lon         Decimal
+
+  Tanam       Tanam[]
+  Image       LahanImage[]
+}
+
+model LahanImage {
+  id          String @id @unique @default(uuid())
+  lahanId     String
+  Lahan       Lahan @relation(fields: [lahanId], references: [id])
+
+  path        String
+
+}
+
+enum JenisBibit {
+  Sayuran
+  Buah
+}
+
+model Bibit {
+  id          String @id @unique @default(uuid())
+  nama        String
+  deskripsi   String
+  hargaBeli   String
+  jenis       JenisBibit
+
+  Tanam       Tanam[]
+}
+
+model Tanam {
+  id          String @id @unique @default(uuid())
+  lahanId     String
+  Lahan       Lahan @relation(fields: [lahanId], references: [id])
+  bibitId     String
+  Bibit       Bibit @relation(fields: [bibitId], references: [id])
+  tanggalTanam  DateTime?
+  tanggalPanen  DateTime?
+  jumlahPanen Int
+  hargaPanen  Int
+
+  AktivitasTanam  AktivitasTanam[]
+}
+
+model AktivitasTanam {
+  id          String @id @unique @default(uuid())
+  tanamId     String
+  Tanam       Tanam @relation(fields: [tanamId], references: [id])
+  nama        String
+  keterangan  String
+  pupuk       Int
+  tanggalAktivitas  DateTime?
+}
