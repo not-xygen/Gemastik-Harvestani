@@ -52,7 +52,7 @@ export async function authenticateRefreshToken(
     },
   });
 
-  if (model?.hashedToken && (await bcrypt.compare(token, model?.hashedToken))) {
+  if (model?.hashed_token && (await bcrypt.compare(token, model?.hashed_token))) {
     return model;
   } else {
     return null;
@@ -67,8 +67,8 @@ export async function createRefreshToken(
   await prisma.refreshToken.create({
     data: {
       id: token.refreshTokenId,
-      hashedToken: await bcrypt.hash(token.token, await bcrypt.genSalt()),
-      userId: user.id,
+      hashed_token: await bcrypt.hash(token.token, await bcrypt.genSalt()),
+      user_id: user.id,
     },
   });
 

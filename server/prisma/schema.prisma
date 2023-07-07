@@ -11,44 +11,44 @@ datasource db {
 }
 
 model User {
-  id            String         @id @unique @default(uuid())
-  email         String         @unique
-  password      String
-  refreshTokens RefreshToken[]
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  id                String         @id @unique @default(uuid())
+  email             String         @unique
+  password          String
+  refresh_tokens    RefreshToken[]
+  created_at        DateTime       @default(now())
+  updated_at        DateTime       @updatedAt
 
-  Lahan         Lahan[]
+  lahan             Lahan[]
 }
 
 model RefreshToken {
-  id          String   @id @unique @default(uuid())
-  hashedToken String
-  userId      String
-  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  revoked     Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @unique @default(uuid())
+  hashed_token  String
+  user_id       String
+  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  revoked       Boolean  @default(false)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
 }
 
 model Lahan {
   id          String @id @unique @default(uuid())
-  userId      String
-  User        User  @relation(fields: [userId], references: [id])
+  user_id     String
+  User        User  @relation(fields: [user_id], references: [id])
   nama        String
   luas        Decimal
   alamat      String
   lat         Decimal
   lon         Decimal
 
-  Tanam       Tanam[]
-  Image       LahanImage[]
+  tanam       Tanam[]
+  image       LahanImage[]
 }
 
 model LahanImage {
   id          String @id @unique @default(uuid())
-  lahanId     String
-  Lahan       Lahan @relation(fields: [lahanId], references: [id])
+  lahan_id    String
+  lahan       Lahan @relation(fields: [lahan_id], references: [id])
 
   path        String
 
@@ -63,32 +63,32 @@ model Bibit {
   id          String @id @unique @default(uuid())
   nama        String
   deskripsi   String
-  hargaBeli   String
+  harga_beli   String
   jenis       JenisBibit
 
-  Tanam       Tanam[]
+  tanam       Tanam[]
 }
 
 model Tanam {
-  id          String @id @unique @default(uuid())
-  lahanId     String
-  Lahan       Lahan @relation(fields: [lahanId], references: [id])
-  bibitId     String
-  Bibit       Bibit @relation(fields: [bibitId], references: [id])
-  tanggalTanam  DateTime?
-  tanggalPanen  DateTime?
-  jumlahPanen Int
-  hargaPanen  Int
+  id              String @id @unique @default(uuid())
+  lahan_id        String
+  lahan           Lahan @relation(fields: [lahan_id], references: [id])
+  bibit_id        String
+  bibit           Bibit @relation(fields: [bibit_id], references: [id])
+  tanggal_tanam   DateTime?
+  tanggal_panen   DateTime?
+  jumlah_panen    Int
+  harga_panen     Int
 
-  AktivitasTanam  AktivitasTanam[]
+  aktivitas_tanam AktivitasTanam[]
 }
 
 model AktivitasTanam {
-  id          String @id @unique @default(uuid())
-  tanamId     String
-  Tanam       Tanam @relation(fields: [tanamId], references: [id])
-  nama        String
-  keterangan  String
-  pupuk       Int
-  tanggalAktivitas  DateTime?
+  id                String @id @unique @default(uuid())
+  tanam_id          String
+  tanam             Tanam @relation(fields: [tanam_id], references: [id])
+  nama              String
+  keterangan        String
+  pupuk             Int
+  tanggal_aktivitas DateTime?
 }

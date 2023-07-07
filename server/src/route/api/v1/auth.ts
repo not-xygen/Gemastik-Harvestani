@@ -82,7 +82,7 @@ export async function refreshToken(req: Request, res: Response) {
 
   if (r) {
     user = await prisma.user.findUnique({
-      where: { id: r.userId },
+      where: { id: r.user_id },
     });
   }
 
