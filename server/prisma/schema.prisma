@@ -90,8 +90,8 @@ model Tanam {
   bibit           Bibit @relation(fields: [bibit_id], references: [id])
   tanggal_tanam   DateTime?
   tanggal_panen   DateTime?
-  jumlah_panen    Int
-  harga_panen     Int
+  jumlah_panen    Int?
+  harga_panen     Int?
   status          StatusTanam
   jarak           Int @default(30)
 
