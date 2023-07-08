@@ -52,7 +52,10 @@ export async function authenticateRefreshToken(
     },
   });
 
-  if (model?.hashed_token && (await bcrypt.compare(token, model?.hashed_token))) {
+  if (
+    model?.hashed_token &&
+    (await bcrypt.compare(token, model?.hashed_token))
+  ) {
     return model;
   } else {
     return null;
@@ -88,7 +91,9 @@ export function generateRefreshToken(user: User): GeneratedRefreshToken {
 }
 
 export function generateAccessToken(user: User): string {
-  return jwt.sign({ userId: user.id }, APP_SECRET!);
+  return jwt.sign({ userId: user.id }, APP_SECRET!, {
+    expiresIn: "15m",
+  });
 }
 
 export function decodeAccessToken(token: string): UserJWT | null {

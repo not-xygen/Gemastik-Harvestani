@@ -40,6 +40,8 @@ model Lahan {
   alamat      String
   lat         Decimal
   lon         Decimal
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt @default(now())
 
   tanam       Tanam[]
   image       LahanImage[]
@@ -52,6 +54,8 @@ model LahanImage {
 
   path        String
 
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt @default(now())
 }
 
 enum JenisBibit {
@@ -67,6 +71,9 @@ model Bibit {
   jenis       JenisBibit
 
   tanam       Tanam[]
+
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt @default(now())
 }
 
 model Tanam {
@@ -81,6 +88,9 @@ model Tanam {
   harga_panen     Int
 
   aktivitas_tanam AktivitasTanam[]
+
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt @default(now())
 }
 
 model AktivitasTanam {
@@ -91,4 +101,7 @@ model AktivitasTanam {
   keterangan        String
   pupuk             Int
   tanggal_aktivitas DateTime?
+
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt @default(now())
 }

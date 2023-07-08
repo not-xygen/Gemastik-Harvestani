@@ -9,6 +9,5 @@ export function forbiddenResponse(res: Response) {
 }
 
 export function notFoundResponse(res: Response) {
-  res.status(404).json({ error: "this resource doesn't exists"} )
+  res.status(404).json({ error: "this resource doesn't exists" });
 }
-
