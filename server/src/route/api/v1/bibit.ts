@@ -32,6 +32,7 @@ export async function bibitAi({
     ph: number,
     rainfall : number,
 }) {
+    const baseUrlMl = process.env.BASE_URL_ML
     const requstData = {
       nitrogen ,
       phosphorous ,
@@ -41,7 +42,7 @@ export async function bibitAi({
       ph,
       rainfall ,
     }
-    const bibit:AxiosResponse<AIBibitResponse> = await axios.post('http://127.0.0.1:8000/v1/plant-recomendation',requstData)
+    const bibit:AxiosResponse<AIBibitResponse> = await axios.post(`${baseUrlMl}/v1/plant-recomendation`,requstData)
 
     return bibit
 }
