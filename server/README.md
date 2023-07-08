@@ -14,13 +14,12 @@ npm run dev
 # API
 
 ## Error Response
+
 ```json
 {
   "error": "error message"
 }
-
 ```
-
 
 ## Register
 
@@ -38,6 +37,7 @@ POST /api/v1/register
 ```
 
 ### Response
+
 token expire dalam 15 menit
 
 ```json
@@ -48,11 +48,13 @@ token expire dalam 15 menit
 ```
 
 ## Login
+
 ```http
 POST /api/v1/login
 ```
 
 ### Request
+
 ```json
 {
   "email": "test@example.com",
@@ -61,6 +63,7 @@ POST /api/v1/login
 ```
 
 ### Response
+
 token expire dalam 15 menit
 
 ```json
@@ -71,19 +74,22 @@ token expire dalam 15 menit
 ```
 
 ## Refresh Token
+
 ```http
 POST /api/v1/auth/refresh
 ```
 
 ### Request
+
 ```http
 Cookie: refresh-token=${refreshToken}
 ```
 
 ### Response
+
 ```json
 {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNWNjY2M1Yy0wODVjLTRhYzItODk2Zi03NGYxNDZmMzkzM2EiLCJpYXQiOjE2ODg3NzE5MDMsImV4cCI6MTY4ODc3MjgwM30.eTnH7w9wd9xIQORTIG6OJbHzieR7TSuk3V7fwNjuXX0"
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNWNjY2M1Yy0wODVjLTRhYzItODk2Zi03NGYxNDZmMzkzM2EiLCJpYXQiOjE2ODg3NzE5MDMsImV4cCI6MTY4ODc3MjgwM30.eTnH7w9wd9xIQORTIG6OJbHzieR7TSuk3V7fwNjuXX0"
 }
 ```
 
@@ -205,4 +211,166 @@ klo mau upload image harus pake multipart
     }
   ]
 }
+```
+
+## Ambil semua tanam yang dipunyai user
+
+```http
+GET /api/v1/tanam?lahan_id={}&status="Executing"
+```
+
+bisa pake query untuk filter lahan_id dan/atau status
+contoh:
+
+```http
+GET /api/v1/tanam?lahan_id=7fde0afd-d14e-4c6a-ac0f-3844975d632e&status="Executing"
+```
+
+bisa juga menggunakan filter atau
+
+```http
+GET /api/v1/tanam?lahan_id=7fde0afd-d14e-4c6a-ac0f-3844975d632e&status=Executing&status=Planning
+```
+
+### Response
+
+status bisa "Planning", "Executing" dan "Closed"
+
+```json
+{
+  "tanam": [
+    {
+      "id": "65ef0a2c-a0be-4db1-8784-2040380a8da9",
+      "lahan_id": "1429934a-6acc-4f09-b08a-43b049000c14",
+      "bibit_id": "30ebf2f8-5f08-490d-801f-7f2ba25f19ef",
+      "tanggal_tanam": "2023-07-08T10:14:24.358Z",
+      "tanggal_panen": "2023-07-08T10:14:24.358Z",
+      "jumlah_panen": 12120,
+      "harga_panen": 1212,
+      "status": "Closed",
+      "jarak": 30,
+      "created_at": "2023-07-08T10:14:24.358Z",
+      "updated_at": "2023-07-08T12:58:31.576Z"
+    },
+    {
+      "id": "7fde0afd-d14e-4c6a-ac0f-3844975d632e",
+      "lahan_id": "1429934a-6acc-4f09-b08a-43b049000c14",
+      "bibit_id": "30ebf2f8-5f08-490d-801f-7f2ba25f19ef",
+      "tanggal_tanam": "2023-07-08T10:14:24.358Z",
+      "tanggal_panen": null,
+      "jumlah_panen": null,
+      "harga_panen": null,
+      "status": "Executing",
+      "jarak": 30,
+      "created_at": "2023-07-08T14:51:22.764Z",
+      "updated_at": "2023-07-08T14:51:29.280Z"
+    }
+  ]
+}
+```
+
+## Buat Tanam
+
+```http
+POST /api/v1/tanam
+```
+
+### Request
+
+```http
+{
+    "bibit_id": "30ebf2f8-5f08-490d-801f-7f2ba25f19ef",
+    "lahan_id": "1429934a-6acc-4f09-b08a-43b049000c14",
+    "tanggal_panen": "2023-07-08T10:14:24.358Z"
+}
+```
+
+### Response
+
+```json
+{
+  "id": "7fde0afd-d14e-4c6a-ac0f-3844975d632e",
+  "lahan_id": "1429934a-6acc-4f09-b08a-43b049000c14",
+  "bibit_id": "30ebf2f8-5f08-490d-801f-7f2ba25f19ef",
+  "tanggal_tanam": null,
+  "tanggal_panen": null,
+  "jumlah_panen": null,
+  "harga_panen": null,
+  "status": "Planning",
+  "jarak": null,
+  "created_at": "2023-07-08T14:51:22.764Z",
+  "updated_at": "2023-07-08T14:51:22.764Z"
+}
+```
+
+## Mengubah Tanaman yang di status planning menjadi executing
+
+```http
+POST /api/v1/tanam/${id}/execute
+```
+
+### Request
+
+```json
+{
+  "jarak": 30,
+  "tanggal_tanam": "2023-07-08T10:14:24.358Z"
+}
+```
+
+### Response
+
+```json
+{
+  "id": "7fde0afd-d14e-4c6a-ac0f-3844975d632e",
+  "lahan_id": "1429934a-6acc-4f09-b08a-43b049000c14",
+  "bibit_id": "30ebf2f8-5f08-490d-801f-7f2ba25f19ef",
+  "tanggal_tanam": "2023-07-08T10:14:24.358Z",
+  "tanggal_panen": null,
+  "jumlah_panen": null,
+  "harga_panen": null,
+  "status": "Executing",
+  "jarak": 30,
+  "created_at": "2023-07-08T14:51:22.764Z",
+  "updated_at": "2023-07-08T14:51:29.280Z"
+}
+```
+
+## Mengubah Tanaman yang di status executing menjadi closed
+
+```http
+POST /api/v1/tanam/${id}/close
+```
+
+### Request
+
+```json
+{
+  "tanggal_panen": "2023-07-08T10:14:24.358Z",
+  "harga_panen": 1212,
+  "jumlah_panen": 12120
+}
+```
+
+### Response
+
+```json
+{
+  "id": "65ef0a2c-a0be-4db1-8784-2040380a8da9",
+  "lahan_id": "1429934a-6acc-4f09-b08a-43b049000c14",
+  "bibit_id": "30ebf2f8-5f08-490d-801f-7f2ba25f19ef",
+  "tanggal_tanam": "2023-07-08T10:14:24.358Z",
+  "tanggal_panen": "2023-07-08T10:14:24.358Z",
+  "jumlah_panen": 12120,
+  "harga_panen": 1212,
+  "status": "Closed",
+  "jarak": 30,
+  "created_at": "2023-07-08T10:14:24.358Z",
+  "updated_at": "2023-07-08T12:58:31.576Z"
+}
+```
+
+## Menghapus tanam
+```http
+DELETE /api/v1/tanam/${id}
 ```
