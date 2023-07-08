@@ -93,6 +93,7 @@ model Tanam {
   jumlah_panen    Int
   harga_panen     Int
   status          StatusTanam
+  jarak           Int @default(30)
 
   aktivitas_tanam AktivitasTanam[]
 
