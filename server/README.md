@@ -374,3 +374,33 @@ POST /api/v1/tanam/${id}/close
 ```http
 DELETE /api/v1/tanam/${id}
 ```
+
+
+## Rekomendasi Bibit 
+
+
+```http
+POST /api/v1/bibit/recomendation
+```
+### Request 
+
+```json
+{
+    "nitrogen" : 24,
+    "phosphorous" : 21,
+    "potash" : 43,
+    "temperature" : 20,
+    "humidity" : 41,
+    "ph": 6.5,
+    "rainfall" : 200
+}
+```
+
+### Response
+
+```json
+{
+    "status": "success",
+    "rekomendasi_bibit": "coffee"
+}
+```
