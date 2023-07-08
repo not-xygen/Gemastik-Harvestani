@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Tanam" ADD COLUMN     "jarak" INTEGER NOT NULL DEFAULT 30;

@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Tanam" ALTER COLUMN "jarak" DROP NOT NULL,
+ALTER COLUMN "jarak" DROP DEFAULT;

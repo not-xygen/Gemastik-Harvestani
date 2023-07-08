@@ -27,6 +27,7 @@ export async function show(req: Request, res: Response) {
     },
     include: {
       image: true,
+      tanam: true,
     },
   });
 

@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["extendedWhereUnique"]
 }
 
 datasource db {
@@ -76,6 +77,12 @@ model Bibit {
   updated_at  DateTime @updatedAt @default(now())
 }
 
+enum StatusTanam {
+  Planning
+  Executing
+  Closed
+}
+
 model Tanam {
   id              String @id @unique @default(uuid())
   lahan_id        String
@@ -84,8 +91,10 @@ model Tanam {
   bibit           Bibit @relation(fields: [bibit_id], references: [id])
   tanggal_tanam   DateTime?
   tanggal_panen   DateTime?
-  jumlah_panen    Int
-  harga_panen     Int
+  jumlah_panen    Int?
+  harga_panen     Int?
+  status          StatusTanam
+  jarak           Int?
 
   aktivitas_tanam AktivitasTanam[]
 
