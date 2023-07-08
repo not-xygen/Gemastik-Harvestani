@@ -76,6 +76,12 @@ model Bibit {
   updated_at  DateTime @updatedAt @default(now())
 }
 
+enum StatusTanam {
+  Planning
+  Executing
+  Closed
+}
+
 model Tanam {
   id              String @id @unique @default(uuid())
   lahan_id        String
@@ -86,6 +92,7 @@ model Tanam {
   tanggal_panen   DateTime?
   jumlah_panen    Int
   harga_panen     Int
+  status          StatusTanam
 
   aktivitas_tanam AktivitasTanam[]
 
