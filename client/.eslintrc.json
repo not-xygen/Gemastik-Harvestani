@@ -1,0 +1,44 @@
+{
+    "env": {
+        "es2021": true,
+        "node": true,
+        "react-native/react-native": true
+    },
+    "extends": [
+        "airbnb",
+        "airbnb/hooks",
+        "airbnb-typescript",
+        "plugin:react/recommended",
+        "prettier",
+        "prettier/react"
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "project": "./tsconfig.json"
+    },
+    "plugins": ["react", "react-native"],
+    "rules": {
+        "no-trailing-spaces": 0,
+        "no-unused-vars": "warn",
+        "no-use-before-define": ["error", { "variables": false }],
+        "react/prop-types": ["error", { "ignore": ["navigation", "navigation.navigate"] }],
+        "lines-around-comment": [
+            "error",
+            {
+                "beforeBlockComment": true,
+                "afterBlockComment": true,
+                "beforeLineComment": true,
+                "afterLineComment": false,
+                "allowBlockStart": true,
+                "allowBlockEnd": true,
+                "allowObjectStart": true,
+                "allowObjectEnd": true,
+                "allowArrayStart": true,
+                "allowArrayEnd": true
+            }
+        ],
+        "camelcase": ["error", { "ignoreDestructuring": true, "properties": "never" }]
+    },
+    "overrides": []
+}
