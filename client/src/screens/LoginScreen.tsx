@@ -40,12 +40,12 @@ export default function LoginScreen({ navigation }: NavigationProps) {
 	const { login, accessToken } = useAuthContext()
 	const [user, setUser] = useState<UserData>({ email: '', password: '' })
 	const handleLoginButton = async () => {
-		await login(user)
-		if (!accessToken) {
-			console.log('Error')
-		} else {
-			navigation.navigate('RootLayoutScreen')
-		}
+		// await login(user)
+		// if (!accessToken) {
+		// 	console.log('Error')
+		// } else {
+		// }
+		navigation.navigate('RootLayoutScreen')
 	}
 
 	const handleSwitchButton = () => {
