@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { LoginScreen, SplashScreen, RegisterScreen, LahanDetailScreen } from '@/screens'
 import { RootLayoutScreen } from '@/layout'
+import { AuthProvider } from '@/context/AuthProvider'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { PortalProvider } from '@gorhom/portal'
@@ -10,6 +11,7 @@ const Stack = createNativeStackNavigator()
 
 export default function App() {
 	return (
+   <AuthProvider>
 		<GestureHandlerRootView style={{ flex: 1 }}>
 			<BottomSheetModalProvider>
 				<PortalProvider>
@@ -45,5 +47,6 @@ export default function App() {
 				</PortalProvider>
 			</BottomSheetModalProvider>
 		</GestureHandlerRootView>
+      </AuthProvider>		
 	)
 }

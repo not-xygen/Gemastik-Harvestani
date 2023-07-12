@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { UserContext } from "./AuthContext";
+import { AuthContext, UserData } from './AuthContext';
 
 interface LoginResponse {
     accessToken : String,
@@ -8,14 +8,16 @@ interface LoginResponse {
 
 export const AuthProvider: React.FC<any> = ({children}) => {
     const [accessToken , setAccessToken] = useState<String>("")
-
-    const login = async (params : any) => {
-        await fetch('', {
+    const login = async (params : UserData) => {
+        await fetch('https://gemastik-node-ygq37pugfa-et.a.run.app/api/v1/auth/login', {
             method : 'POST',
             body : JSON.stringify({
                 email : params.email,
                 password : params.password
-            })
+            }),
+            headers: {
+                "Content-Type": "application/json",
+              },
         }).then(response => {
             if(response.ok) {
                 response.json().then((accessToken) => {
@@ -31,9 +33,30 @@ export const AuthProvider: React.FC<any> = ({children}) => {
         
     }
 
+    const register = async (params : UserData ) => {
+        await fetch('https://gemastik-node-ygq37pugfa-et.a.run.app/api/v1/auth/register',{
+            method : 'POST',
+            body : JSON.stringify({
+                email : params.email,
+                password : params.password
+            }),
+            headers : {
+                "Content-Type" : "application/json"
+            }
+        }).then(response => {
+            if(response.ok) {
+                response.json().then((accessToken) => {
+                    setAccessToken(accessToken)
+                })
+            } else {
+                response.json().then((err) => console.error(err))
+            }
+        })
+    }
+
     return(
-        <UserContext.Provider value={{accessToken ,login,logout}}>
+        <AuthContext.Provider value={{accessToken ,login,logout,register}}>
             {children}
-        </UserContext.Provider>
+        </AuthContext.Provider>
     )
 }
