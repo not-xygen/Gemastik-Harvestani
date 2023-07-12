@@ -6,7 +6,7 @@ import { useAuthContext } from '@/hooks/AuthHooks'
 import { useState } from 'react'
 import { UserData } from '@/context/AuthContext'
 
-type Props = {
+type NavigationProps = {
 	navigation: NativeStackNavigationProp<RootStackParamList, 'RegisterScreen', 'RootLayoutScreen'>
 }
 
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
 	},
 })
 
+
 export default function LoginScreen({ navigation }: Props) {
 	const {login,accessToken} = useAuthContext()
  	const [user,setUser] = useState<UserData>({email : '' , password : ''})
@@ -46,6 +47,7 @@ export default function LoginScreen({ navigation }: Props) {
 		} else {
 			navigation.navigate('RootLayoutScreen')
 		}
+
 	}
 
 	const handleSwitchButton = () => {
