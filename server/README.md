@@ -376,6 +376,30 @@ DELETE /api/v1/tanam/${id}
 ```
 
 
+## Ambil Bibit
+
+```http
+GET /api/v1/bibit
+```
+
+### Response
+jenis bisa berupa "Buah" atau "Sayuran"
+```json
+{
+    "bibit": [
+        {
+            "id": "4cff4b68-5244-4056-8c1c-5bd2ba01e4b4",
+            "nama": "rice",
+            "deskripsi": "",
+            "harga_beli": 9776,
+            "jenis": "Buah",
+            "created_at": "2023-07-12T08:41:06.744Z",
+            "updated_at": "2023-07-12T08:41:06.744Z"
+        },
+    ]
+}
+```
+
 ## Rekomendasi Bibit 
 
 
@@ -400,7 +424,6 @@ POST /api/v1/bibit/recomendation
 
 ```json
 {
-    "status": "success",
     "rekomendasi_bibit": "coffee"
 }
 ```
