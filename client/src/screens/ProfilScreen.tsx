@@ -9,10 +9,10 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default function ManajemenLahanScreen() {
+export default function ProfilScreen() {
 	return (
 		<View style={styles.container}>
-			<Text>Manajemen Lahan</Text>
+			<Text>Profil</Text>
 		</View>
 	)
 }
