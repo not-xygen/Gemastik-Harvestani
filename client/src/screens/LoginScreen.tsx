@@ -36,47 +36,53 @@ const styles = StyleSheet.create({
 	},
 })
 
-
-export default function LoginScreen({ navigation }: Props) {
-	const {login,accessToken} = useAuthContext()
- 	const [user,setUser] = useState<UserData>({email : '' , password : ''})
+export default function LoginScreen({ navigation }: NavigationProps) {
+	const { login, accessToken } = useAuthContext()
+	const [user, setUser] = useState<UserData>({ email: '', password: '' })
 	const handleLoginButton = async () => {
 		await login(user)
-		if(!accessToken){
-			console.log("Error")
+		if (!accessToken) {
+			console.log('Error')
 		} else {
 			navigation.navigate('RootLayoutScreen')
 		}
-
 	}
 
 	const handleSwitchButton = () => {
 		navigation.navigate('RegisterScreen')
 	}
 
-	const handleChangeEmail = (value : String) => {
+	const handleChangeEmail = (value: String) => {
 		setUser((prevData) => ({
 			...prevData,
-			email :value
+			email: value,
 		}))
 	}
-	const handleChangePassword = (value : String) => {
+	const handleChangePassword = (value: String) => {
 		setUser((prevData) => ({
 			...prevData,
-			password :value
+			password: value,
 		}))
 	}
 	return (
 		<View style={styles.container}>
 			<View style={styles.inputContainer}>
 				<Text>Username</Text>
-				<TextInput placeholder="Masukkan Username" style={styles.inputField} onChangeText={handleChangeEmail} />
+				<TextInput
+					placeholder="Masukkan Username"
+					style={styles.inputField}
+					onChangeText={handleChangeEmail}
+				/>
 			</View>
 			<View style={styles.inputContainer}>
 				<Text>Password</Text>
-				<TextInput placeholder="Masukkan Username" style={styles.inputField} onChangeText={handleChangePassword} />
+				<TextInput
+					placeholder="Masukkan Username"
+					style={styles.inputField}
+					onChangeText={handleChangePassword}
+				/>
 			</View>
-			<Button title="Login" onPress={handleLoginButton}/>
+			<Button title="Login" onPress={handleLoginButton} />
 			<Text style={styles.additionalContainer}>
 				Belum punya akun? <Button title="daftar disini" onPress={handleSwitchButton} />
 			</Text>
