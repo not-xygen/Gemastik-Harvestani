@@ -2,10 +2,40 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import * as React from 'react'
 import { StyleSheet, View, Text, TouchableWithoutFeedback, TextInput, Button } from 'react-native'
 import { Portal, PortalHost } from '@gorhom/portal'
+import MapView from 'react-native-maps'
+import { PROVIDER_GOOGLE } from 'react-native-maps'
+import * as Location from 'expo-location';
+import { useState,useEffect } from 'react';
+
 
 export default function TambahTitikLahanSheet() {
 	const bottomSheetRef = React.useRef<BottomSheet>(null)
 	const snapPoints = React.useMemo(() => ['90%'], [])
+
+	const [location, setLocation] = useState<any>(null);
+  	const [errorMsg, setErrorMsg] = useState<any>(null);
+
+	useEffect(() => {
+		(async () => {
+		
+		let { status } = await Location.requestForegroundPermissionsAsync();
+		if (status !== 'granted') {
+			setErrorMsg('Permission to access location was denied');
+			return;
+		}
+
+		let location = await Location.getCurrentPositionAsync({});
+		setLocation(location);
+		})();
+	}, []);
+
+	let text = 'Waiting..';
+	if (errorMsg) {
+		text = errorMsg;
+	} else if (location) {
+		text = JSON.stringify(location);
+		console.log(location.coords)
+	}
 
 	const handleSheetChanges = React.useCallback((index: number) => {
 		console.log('handleSheetChanges', index)
@@ -29,14 +59,12 @@ export default function TambahTitikLahanSheet() {
 					enablePanDownToClose={true}
 				>
 					<View style={styles.container}>
-						<View style={styles.inputContainer}>
-							<Text>Latitude</Text>
-							<TextInput placeholder="Masukkan Nama Lahan" style={styles.inputField} />
-						</View>
-						<View style={styles.inputContainer}>
-							<Text>Longitude</Text>
-							<TextInput placeholder="Masukkan Alamat" style={styles.inputField} />
-						</View>
+						<MapView style={styles.map} provider={PROVIDER_GOOGLE} initialRegion={{
+							latitude : location.coords.latitude,
+							longitude : location.coords.latitude,
+							latitudeDelta: 0,
+							longitudeDelta: 0.0421,
+						}}/>
 						<Button title="Confirm" />
 					</View>
 				</BottomSheet>

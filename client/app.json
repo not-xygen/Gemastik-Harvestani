@@ -1,24 +1,47 @@
 {
-	"expo": {
-		"name": "HarvesTani",
-		"displayName": "HarvesTani",
-		"slug": "HarvesTani",
-		"version": "1.0.0",
-		"orientation": "portrait",
-		"icon": "./assets/icon.png",
-		"userInterfaceStyle": "light",
-		"assetBundlePatterns": ["**/*"],
-		"ios": {
-			"supportsTablet": true
-		},
-		"android": {
-			"adaptiveIcon": {
-				"foregroundImage": "./assets/adaptive-icon.png",
-				"backgroundColor": "#ffffff"
-			}
-		},
-		"web": {
-			"favicon": "./assets/favicon.png"
-		}
-	}
+  "expo": {
+    "name": "HarvesTani",
+    "displayName": "HarvesTani",
+    "slug": "harvestani",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "config" : {
+        "googleMaps" : {
+          "apiKey" : ""
+        }
+      },
+      "permission" : "ACCESS_FINE_LOCATION",
+      "package": "com.ansxy.harvestani"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5bce2507-df70-48db-aa85-24bfc9a6176a"
+      }
+    },
+    "plugins"  : [
+      [
+        "expo-location" ,
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
+      ]
+    ],
+    "owner": "ansxy"
+  }
 }
