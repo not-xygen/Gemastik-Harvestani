@@ -2,11 +2,13 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { LoginScreen, SplashScreen, RegisterScreen, LahanDetailScreen } from '@/screens'
 import { RootLayoutScreen } from '@/layout'
+import { AuthProvider } from '@/context/AuthProvider'
 
 const Stack = createNativeStackNavigator()
 
 export default function App() {
 	return (
+	<AuthProvider>
 		<NavigationContainer>
 			<Stack.Navigator initialRouteName="SplashScreen">
 				<Stack.Screen
@@ -32,5 +34,6 @@ export default function App() {
 				/>
 			</Stack.Navigator>
 		</NavigationContainer>
+	</AuthProvider>		
 	)
 }
