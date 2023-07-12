@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Image, StyleSheet } from 'react-native'
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -11,9 +11,15 @@ interface NavigationProps {
 const SplashScreen = ({ navigation }: NavigationProps) => {
 	const [timePassed, setTimePassed] = useState(false)
 
-	setTimeout(function () {
-		setTimePassed(true)
-	}, 5000)
+	useEffect(() => {
+		const timeout = setTimeout(() => {
+			setTimePassed(true)
+		}, 5000)
+
+		return () => {
+			clearTimeout(timeout)
+		}
+	}, [])
 
 	if (!timePassed) {
 		return (
@@ -22,6 +28,7 @@ const SplashScreen = ({ navigation }: NavigationProps) => {
 			</View>
 		)
 	}
+
 	navigation.navigate('LoginScreen')
 	return null
 }
