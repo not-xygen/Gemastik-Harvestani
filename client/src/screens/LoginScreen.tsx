@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '@/types'
 
-type Props = {
+type NavigationProps = {
 	navigation: NativeStackNavigationProp<RootStackParamList, 'RegisterScreen', 'RootLayoutScreen'>
 }
 
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default function LoginScreen({ navigation }: Props) {
+export default function LoginScreen({ navigation }: NavigationProps) {
 	const handleLoginButton = () => {
 		navigation.navigate('RootLayoutScreen')
 	}
