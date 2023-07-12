@@ -149,13 +149,12 @@ export async function store(req: Request, res: Response) {
         status: StatusTanam.Planning,
       },
     });
-    console.log(model);
 
     res.status(201).json(model);
   } else {
     return res
       .status(403)
-      .json({ error: "tanam sudah mempunyai rencana atau dalam proses tanam" });
+      .json({ error: "lahan sudah mempunyai rencana atau dalam proses tanam" });
   }
 }
 

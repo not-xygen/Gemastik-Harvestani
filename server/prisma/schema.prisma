@@ -65,16 +65,16 @@ enum JenisBibit {
 }
 
 model Bibit {
-  id          String @id @unique @default(uuid())
-  nama        String
-  deskripsi   String
-  harga_beli   String
-  jenis       JenisBibit
+  id            String @id @unique @default(uuid())
+  nama          String
+  deskripsi     String
+  harga_beli    Decimal
+  jenis         JenisBibit
 
-  tanam       Tanam[]
+  tanam         Tanam[]
 
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt @default(now())
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt @default(now())
 }
 
 enum StatusTanam {

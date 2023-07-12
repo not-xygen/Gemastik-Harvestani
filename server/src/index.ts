@@ -33,8 +33,8 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
 });
 
 
-const port = process.env.APP_PORT;
-app.listen(3000, () => {
+const port = process.env.APP_PORT ?? 3000;
+app.listen(port, () => {
   console.log(`server started at ${3000}`);
 });
 
