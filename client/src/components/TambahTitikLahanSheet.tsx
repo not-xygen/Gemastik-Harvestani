@@ -2,39 +2,38 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import * as React from 'react'
 import { StyleSheet, View, Text, TouchableWithoutFeedback, TextInput, Button } from 'react-native'
 import { Portal, PortalHost } from '@gorhom/portal'
-import MapView from 'react-native-maps'
+import MapView, { Marker } from 'react-native-maps'
 import { PROVIDER_GOOGLE } from 'react-native-maps'
 import * as Location from 'expo-location';
 import { useState,useEffect } from 'react';
+import { useLahanContext } from '@/hooks/LahanHooks'
+import { LatLot } from '../context/LahanContext';
+import { LahanProvider } from '@/context/LahanProvider';
 
 
 export default function TambahTitikLahanSheet() {
 	const bottomSheetRef = React.useRef<BottomSheet>(null)
 	const snapPoints = React.useMemo(() => ['90%'], [])
-
-	const [location, setLocation] = useState<any>(null);
-  	const [errorMsg, setErrorMsg] = useState<any>(null);
+	const {pin} = useLahanContext()
+	const [currentLocation,setCurrentLocation] = useState<Location.LocationObject>()
+	const [markerCoordinate,setMarkerCoordinate] = useState<any>()
 
 	useEffect(() => {
-		(async () => {
-		
-		let { status } = await Location.requestForegroundPermissionsAsync();
-		if (status !== 'granted') {
-			setErrorMsg('Permission to access location was denied');
-			return;
+		getLocation()	
+	},[])
+
+	const getLocation = async () => {
+		try {
+			let {status} = await Location.requestForegroundPermissionsAsync()
+			console.log(status)
+			if(status !== "granted"){
+				return;
+			}
+			let location = await Location.getCurrentPositionAsync({})
+			setCurrentLocation(location)
+		} catch (error) {
+			console.error("Error requesting location permission:", error);
 		}
-
-		let location = await Location.getCurrentPositionAsync({});
-		setLocation(location);
-		})();
-	}, []);
-
-	let text = 'Waiting..';
-	if (errorMsg) {
-		text = errorMsg;
-	} else if (location) {
-		text = JSON.stringify(location);
-		console.log(location.coords)
 	}
 
 	const handleSheetChanges = React.useCallback((index: number) => {
@@ -45,6 +44,17 @@ export default function TambahTitikLahanSheet() {
 		bottomSheetRef?.current?.expand()
 	}
 
+	const onMapClick = (event : any) => {
+		setMarkerCoordinate(event.nativeEvent.coordinate)
+	}
+
+	const submit = (event : any) => {
+		const latLot = {
+			"lat" : parseFloat(markerCoordinate.latitude),
+			"lon" : parseFloat(markerCoordinate.longitude)
+		}
+		pin(latLot)
+	}
 	return (
 		<>
 			<TouchableWithoutFeedback onPress={onAddButtonPress}>
@@ -59,17 +69,17 @@ export default function TambahTitikLahanSheet() {
 					enablePanDownToClose={true}
 				>
 					<View style={styles.container}>
-						<MapView style={styles.map} provider={PROVIDER_GOOGLE} initialRegion={{
-							latitude : location.coords.latitude,
-							longitude : location.coords.latitude,
-							latitudeDelta: 0,
-							longitudeDelta: 0.0421,
-						}}/>
-						<Button title="Confirm" />
+						<MapView style={styles.map} provider={PROVIDER_GOOGLE} onPress={onMapClick}>
+							<Marker
+								coordinate={markerCoordinate}
+								title={"title"}
+								description={"description"}
+							/>
+						</MapView>
+						<Button title="Confirm" onPress={submit} />
 					</View>
 				</BottomSheet>
 			</Portal>
-
 			<PortalHost name="custom_host" />
 		</>
 	)

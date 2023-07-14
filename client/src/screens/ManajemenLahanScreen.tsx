@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, ScrollView, Image, TextInput } from 'react-native'
 import { TambahLahanSheet } from '@/components'
+import { LahanProvider } from '@/context/LahanProvider'
 
 const styles = StyleSheet.create({
 	container: {
@@ -38,7 +39,7 @@ export default function ManajemenLahanScreen() {
 						zIndex: 2,
 					}}
 				>
-					<TambahLahanSheet />
+						<TambahLahanSheet />
 				</View>
 
 				<View style={{ paddingHorizontal: 20 }}>

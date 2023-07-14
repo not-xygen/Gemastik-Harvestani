@@ -1,23 +1,27 @@
-import React, { useState } from "react";
-import { LahanContext, LahanData } from "./LahanContext";
+import React, { useContext, useState } from "react";
+import { LahanContext, LahanData, LatLot } from './LahanContext';
+import { useAuthContext } from "@/hooks/AuthHooks";
 
 
 
 export const LahanProvider: React.FC<any> = ({children}) => {
-    const [lahanData,setLahanData] = useState<LahanData>()
+    const [latLot ,setLatLot] = useState<LatLot>()
     const [loading,setLoading] =useState<Boolean>(false)
-    const add =async (params:LahanData) => {
-        await fetch('https://gemastik-node-ygq37pugfa-et.a.run.app/api/v1/auth/login',{
+    const {accessToken} = useAuthContext()
+    const add =async (params : any) => {
+        console.log(latLot?.lon)
+        await fetch('https://gemastik-node-ygq37pugfa-et.a.run.app/api/v1/lahan',{
             method : 'POST',
             body : JSON.stringify({
-                "nama": lahanData?.nama,
-                "luas": lahanData?.luas, //decimal
-                "alamat": lahanData?.alamat,
-                "lat": lahanData?.lat, // decimal latitude
-                "lon": lahanData?.lot // decimal longitude
+                "nama": params?.nama,
+                "luas": parseFloat(params?.luas), //decimal
+                "alamat": params?.alamat,
+                "lat": latLot?.lat, // decimal latitude
+                "lon": latLot?.lon // decimal longitude
             }),
             headers : {
                 "Content-Type" : "application/json",
+                "authorization": `Bearer ${accessToken}`
             }
         }).then(response => {
             if(response.ok) {
@@ -30,6 +34,7 @@ export const LahanProvider: React.FC<any> = ({children}) => {
         })
     }
     const del = async(params : LahanData) => {
+        console.log("hehe")
         return 
     }
     const edit = async(params : LahanData) => {
@@ -41,8 +46,17 @@ export const LahanProvider: React.FC<any> = ({children}) => {
     const show = async(params : LahanData) => {
         return 
     }
+
+    const pin = async (params : LatLot) => {
+        setLatLot({
+            ...latLot,
+            "lat" : params.lat,
+            "lon" : params.lon
+        })
+        console.log(params)
+    }
     return(
-        <LahanContext.Provider value={{add,del,edit,update,show}}>
+        <LahanContext.Provider value={{add,del,edit,update,show,pin}}>
             {children}
         </LahanContext.Provider>
     )

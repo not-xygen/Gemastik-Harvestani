@@ -5,9 +5,11 @@ export interface LahanData {
     nama : string
     luas : number
     alamat : string
-    lat : number
-    lot : number
     
+}
+export interface LatLot {
+    lat : number,
+    lon : number
 }
 
 export interface LahanContextProps {
@@ -16,7 +18,9 @@ export interface LahanContextProps {
     edit : (params : LahanData) => Promise<void>
     update: (params : LahanData) => Promise<void>
     show: (params : LahanData) => Promise<void>
+    pin : (params : any) => Promise<void>
 }
+
 
 
 export const LahanContext = createContext<LahanContextProps>({
@@ -25,4 +29,5 @@ export const LahanContext = createContext<LahanContextProps>({
     edit : async () => {},
     update : async () => {},
     show : async () => {},
+    pin : async() => {}
 })

@@ -21,7 +21,7 @@ export const AuthProvider: React.FC<any> = ({children}) => {
         }).then(response => {
             if(response.ok) {
                 response.json().then((accessToken) => {
-                    setAccessToken(accessToken)
+                    setAccessToken(accessToken.token)
                 });
             } else {
                 response.json().then((err) => console.error(err))
@@ -41,12 +41,12 @@ export const AuthProvider: React.FC<any> = ({children}) => {
                 password : params.password
             }),
             headers : {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
             }
         }).then(response => {
             if(response.ok) {
                 response.json().then((accessToken) => {
-                    setAccessToken(accessToken)
+                    setAccessToken(accessToken.token)
                 })
             } else {
                 response.json().then((err) => console.error(err))
