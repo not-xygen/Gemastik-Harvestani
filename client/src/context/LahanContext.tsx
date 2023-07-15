@@ -17,8 +17,10 @@ export interface LahanContextProps {
     del : (params : LahanData) => Promise<void>
     edit : (params : LahanData) => Promise<void>
     update: (params : LahanData) => Promise<void>
-    show: (params : LahanData) => Promise<void>
+    show: () => Promise<void>
     pin : (params : any) => Promise<void>
+    allLahan : any
+
 }
 
 
@@ -29,5 +31,6 @@ export const LahanContext = createContext<LahanContextProps>({
     edit : async () => {},
     update : async () => {},
     show : async () => {},
-    pin : async() => {}
+    pin : async() => {},
+    allLahan : ""
 })

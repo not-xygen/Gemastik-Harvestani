@@ -3,13 +3,12 @@ import { LahanContext, LahanData, LatLot } from './LahanContext';
 import { useAuthContext } from "@/hooks/AuthHooks";
 
 
-
 export const LahanProvider: React.FC<any> = ({children}) => {
     const [latLot ,setLatLot] = useState<LatLot>()
     const [loading,setLoading] =useState<Boolean>(false)
+    const [allLahan,setAllLahan] = useState<any>()
     const {accessToken} = useAuthContext()
     const add =async (params : any) => {
-        console.log(latLot?.lon)
         await fetch('https://gemastik-node-ygq37pugfa-et.a.run.app/api/v1/lahan',{
             method : 'POST',
             body : JSON.stringify({
@@ -43,8 +42,22 @@ export const LahanProvider: React.FC<any> = ({children}) => {
     const update = async(params : LahanData) => {
         return 
     }
-    const show = async(params : LahanData) => {
-        return 
+    const show = async() => {
+        await fetch('https://gemastik-node-ygq37pugfa-et.a.run.app/api/v1/lahan',{
+            method : 'GET',
+            headers : {
+                "Content-Type" : "application/json",
+                "authorization": `Bearer ${accessToken}`
+            }
+        }).then(response => {
+            if(response.ok) {
+                response.json().then((lahanData) => {
+                    setAllLahan(lahanData)
+                })
+            }else {
+                response.json().then(err => console.error(err))
+            }
+        }) 
     }
 
     const pin = async (params : LatLot) => {
@@ -53,10 +66,9 @@ export const LahanProvider: React.FC<any> = ({children}) => {
             "lat" : params.lat,
             "lon" : params.lon
         })
-        console.log(params)
     }
     return(
-        <LahanContext.Provider value={{add,del,edit,update,show,pin}}>
+        <LahanContext.Provider value={{allLahan,add,del,edit,update,show,pin,}}>
             {children}
         </LahanContext.Provider>
     )
