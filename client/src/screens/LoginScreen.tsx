@@ -44,8 +44,8 @@ export default function LoginScreen({ navigation }: NavigationProps) {
 		if (!accessToken) {
 			console.log('Error')
 		} else {
+			navigation.navigate('RootLayoutScreen')
 		}
-		navigation.navigate('RootLayoutScreen')
 	}
 
 	const handleSwitchButton = () => {

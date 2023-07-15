@@ -11,12 +11,9 @@ import {
 	NativeSyntheticEvent,
 	TextInputChangeEventData,
 } from 'react-native'
-import { Portal, PortalHost, PortalProvider } from '@gorhom/portal'
+import { PortalHost, PortalProvider } from '@gorhom/portal'
 import { TambahTitikLahanSheet } from '@/components'
 import { useLahanContext } from '@/hooks/LahanHooks'
-import { LahanData } from '@/context/LahanContext'
-import { EventEmitter } from 'expo-location'
-import { LahanProvider } from '@/context/LahanProvider'
 
 export default function TambahLahanSheet() {
 	const bottomSheetRef = React.useRef<BottomSheet>(null)
