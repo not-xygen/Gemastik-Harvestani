@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Button, ActivityIndicator } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '@/types'
 import { useAuthContext } from '@/hooks/AuthHooks'
 import { useState } from 'react'
 import { UserData } from '@/context/AuthContext'
+import { combineTransition } from 'react-native-reanimated'
 
 type NavigationProps = {
 	navigation: NativeStackNavigationProp<RootStackParamList, 'RegisterScreen', 'RootLayoutScreen'>
@@ -24,27 +25,64 @@ const styles = StyleSheet.create({
 	inputContainer: {
 		display: 'flex',
 		gap: 6,
+		shadowColor : '#202020',
+		shadowOffset : {
+			width : 0,
+			height : 1 
+		},
+		shadowOpacity : 0.4,
+		shadowRadius : 2,
+		borderRadius : 4
 	},
 	inputField: {
 		paddingHorizontal: 12,
 		paddingVertical: 9,
 		backgroundColor: '#FAFAFA',
+		borderRadius : 4
 	},
 	additionalContainer: {
 		display: 'flex',
+		justifyContent : "center",
 		flexDirection: 'row',
 	},
+	buttonContainer : {
+		backgroundColor : "#41644A",
+		borderRadius : 4,
+		display : "flex",
+		justifyContent: "center",
+		flexDirection : 'row',
+		shadowColor : '#202020',
+		shadowOffset : {
+			width : 0,
+			height : 2 
+		},
+		shadowOpacity : 1,
+		shadowRadius : 3
+	},
+	daftarText : {
+		color: "#E86A33",
+		fontWeight: "600",
+	},
+	loginText:{
+		color: "#FFFF",
+		fontWeight: "bold",
+		fontSize : 20,
+		padding : 10
+	}
 })
 
 export default function LoginScreen({ navigation }: NavigationProps) {
 	const { login, accessToken } = useAuthContext()
+	const [loading,setloading] = useState<Boolean>(false)
 	const [user, setUser] = useState<UserData>({ email: '', password: '' })
 	const handleLoginButton = async () => {
+		setloading(true)
 		await login(user)
-		if (!accessToken) {
-			console.log('Error')
-		} else {
+		setloading(false)
+		if (accessToken) {
 			navigation.navigate('RootLayoutScreen')
+		} else {
+			console.log('Error')
 		}
 	}
 
@@ -77,15 +115,25 @@ export default function LoginScreen({ navigation }: NavigationProps) {
 			<View style={styles.inputContainer}>
 				<Text>Password</Text>
 				<TextInput
+					secureTextEntry={true}
 					placeholder="Masukkan Username"
 					style={styles.inputField}
 					onChangeText={handleChangePassword}
 				/>
 			</View>
-			<Button title="Login" onPress={handleLoginButton} />
-			<Text style={styles.additionalContainer}>
-				Belum punya akun? <Button title="daftar disini" onPress={handleSwitchButton} />
-			</Text>
+			{loading?(
+				<ActivityIndicator size="large" color="blue" />
+			) : (
+				<View style={styles.buttonContainer}>
+					<Text style={styles.loginText} onPress={handleLoginButton}>Login</Text>
+				</View>
+			)}
+			<View style={styles.additionalContainer}>
+				<Text>
+				Belum punya akun? 
+				</Text>
+				<Text style={styles.daftarText} onPress={handleSwitchButton}>Daftar Disini</Text>
+			</View>
 		</View>
 	)
 }

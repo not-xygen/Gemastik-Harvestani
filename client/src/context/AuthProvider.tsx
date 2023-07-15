@@ -9,6 +9,7 @@ interface LoginResponse {
 export const AuthProvider: React.FC<any> = ({children}) => {
     const [accessToken , setAccessToken] = useState<String>("")
     const login = async (params : UserData) => {
+
         await fetch('https://gemastik-node-ygq37pugfa-et.a.run.app/api/v1/auth/login', {
             method : 'POST',
             body : JSON.stringify({
@@ -25,6 +26,7 @@ export const AuthProvider: React.FC<any> = ({children}) => {
                 });
             } else {
                 response.json().then((err) => console.error(err))
+
             }
         })
     }
