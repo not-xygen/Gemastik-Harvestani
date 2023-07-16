@@ -1,23 +1,46 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import {
-	BerandaScreen,
-	ManajemenLahanScreen,
-	ManajemenKeuanganScreen,
-	ProfilScreen,
-} from '@/screens'
-import { LahanProvider } from '@/context/LahanProvider'
+import { StyleSheet, View } from 'react-native'
+import { useAuthContext } from '@/hooks/AuthHooks'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { LoginScreen, SplashScreen, RegisterScreen, LahanDetailScreen } from '@/screens'
+import { NavigationContainer } from '@react-navigation/native'
+import { useEffect, useState } from 'react'
+import { NavbarLayout } from '@/layout/index'
 
-const Tab = createBottomTabNavigator()
+const Stack = createNativeStackNavigator()
+          
 
 export default function RootLayoutScreen() {
+	const {accessToken} = useAuthContext()
+	const [token,setToken] = useState<any>()
+	useEffect(() => { 
+		setToken(accessToken)
+	},[accessToken])
 	return (
-		<LahanProvider>
-			<Tab.Navigator screenOptions={{ headerShown: false }}>
-				<Tab.Screen name="Beranda" component={BerandaScreen} />
-					<Tab.Screen name="Lahan" component={ManajemenLahanScreen} />
-				<Tab.Screen name="Keuangan" component={ManajemenKeuanganScreen} />
-				<Tab.Screen name="Profil" component={ProfilScreen} />
-			</Tab.Navigator>
-		</LahanProvider>
+		<NavigationContainer>
+				<SplashScreen>
+				<Stack.Navigator >
+					{token === "" ? (
+						<Stack.Group screenOptions={{headerShown :false}}>
+							<Stack.Screen
+							name="LoginScreen"
+							component={LoginScreen}
+							options={{ headerShown: false }}
+							/>
+							<Stack.Screen
+							name="RegisterScreen"
+							component={RegisterScreen}
+							options={{ headerShown: false }}
+							/>
+						</Stack.Group>
+					) : (
+						<Stack.Screen
+								name="NavbarLayout"
+								component={NavbarLayout}
+								options={{ headerShown: false }}
+						/>
+					)}
+				</Stack.Navigator>
+			</SplashScreen>
+			</NavigationContainer>
 	)
 }

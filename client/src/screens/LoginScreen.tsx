@@ -8,7 +8,7 @@ import { UserData } from '@/context/AuthContext'
 import { combineTransition } from 'react-native-reanimated'
 
 type NavigationProps = {
-	navigation: NativeStackNavigationProp<RootStackParamList, 'RegisterScreen', 'RootLayoutScreen'>
+	navigation: NativeStackNavigationProp<RootStackParamList, 'RegisterScreen', 'NavbarLayout'>
 }
 
 const styles = StyleSheet.create({
@@ -79,13 +79,10 @@ export default function LoginScreen({ navigation }: NavigationProps) {
 		setloading(true)
 		await login(user)
 		setloading(false)
-		if (accessToken) {
-			navigation.navigate('RootLayoutScreen')
-		} else {
-			console.log('Error')
-		}
 	}
 
+
+	
 	const handleSwitchButton = () => {
 		navigation.navigate('RegisterScreen')
 	}

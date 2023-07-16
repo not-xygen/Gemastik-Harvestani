@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { View, Image, StyleSheet } from 'react-native'
 
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { RootStackParamList } from '@/types'
 
-interface NavigationProps {
-	navigation: NativeStackNavigationProp<RootStackParamList, 'LoginScreen'>
-}
-
-const SplashScreen = ({ navigation }: NavigationProps) => {
+const SplashScreen: React.FC<any> = ({children}) => {
 	const [timePassed, setTimePassed] = useState(false)
 
 	useEffect(() => {
@@ -27,10 +21,12 @@ const SplashScreen = ({ navigation }: NavigationProps) => {
 				<Image source={require('../../assets/splash.png')} style={styles.logo} />
 			</View>
 		)
+	} else {
+		return (
+			<>{children}</>
+		)
 	}
 
-	navigation.navigate('LoginScreen')
-	return null
 }
 
 const styles = StyleSheet.create({

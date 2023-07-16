@@ -21,8 +21,9 @@ export const AuthProvider: React.FC<any> = ({children}) => {
               },
         }).then(response => {
             if(response.ok) {
-                response.json().then((accessToken) => {
-                    setAccessToken(accessToken.token)
+                response.json().then(async (accessToken) => {
+                    const accesstoken = await accessToken
+                    setAccessToken(accesstoken.token)
                 });
             } else {
                 response.json().then((err) => console.error(err))
