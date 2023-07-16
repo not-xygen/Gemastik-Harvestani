@@ -8,20 +8,50 @@ import {
 	Image,
 	TextInput,
 	Button,
+	NativeSyntheticEvent,
+	TextInputChangeEventData,
 } from 'react-native'
-import { Portal, PortalHost } from '@gorhom/portal'
+import { PortalHost, PortalProvider } from '@gorhom/portal'
 import { TambahTitikLahanSheet } from '@/components'
+import { useLahanContext } from '@/hooks/LahanHooks'
 
 export default function TambahLahanSheet() {
 	const bottomSheetRef = React.useRef<BottomSheet>(null)
+	const [lahanData,setLahanData] = React.useState<any>()
 	const snapPoints = React.useMemo(() => ['90%'], [])
-
+	const {add} = useLahanContext()
 	const handleSheetChanges = React.useCallback((index: number) => {
 		console.log('handleSheetChanges', index)
 	}, [])
 
 	const onAddButtonPress = () => {
 		bottomSheetRef?.current?.expand()
+	}
+
+	const onChangeNama = (event : NativeSyntheticEvent<TextInputChangeEventData>
+		) => {
+		setLahanData({
+			...lahanData,
+			"nama" : event.nativeEvent.text
+		})
+	}
+	const onChangeAlamat = (event : NativeSyntheticEvent<TextInputChangeEventData>
+		) => {
+		setLahanData({
+			...lahanData,
+			"alamat" : event.nativeEvent.text
+		})
+	}
+	const onChangeLuas = (event : NativeSyntheticEvent<TextInputChangeEventData>
+		) => {
+		setLahanData({
+			...lahanData,
+			"luas" : event.nativeEvent.text
+		})
+	}
+
+	const submit = () => {
+		add(lahanData)
 	}
 
 	return (
@@ -40,33 +70,32 @@ export default function TambahLahanSheet() {
 					}}
 				/>
 			</TouchableWithoutFeedback>
-			<Portal>
-				<BottomSheet
-					ref={bottomSheetRef}
-					index={-1}
-					snapPoints={snapPoints}
-					onChange={handleSheetChanges}
-					enablePanDownToClose={true}
-				>
-					<View style={styles.container}>
-						<View style={styles.inputContainer}>
-							<Text>Nama Lahan</Text>
-							<TextInput placeholder="Masukkan Username" style={styles.inputField} />
+				<PortalProvider>
+					<BottomSheet
+						ref={bottomSheetRef}
+						index={-1}
+						snapPoints={snapPoints}
+						onChange={handleSheetChanges}
+						enablePanDownToClose={true}
+					>
+						<View style={styles.container}>
+							<View style={styles.inputContainer}>
+								<Text>Nama Lahan</Text>
+								<TextInput placeholder="Masukkan Username" style={styles.inputField} onChange={onChangeNama}/>
+							</View>
+							<View style={styles.inputContainer}>
+								<Text>Luas</Text>
+								<TextInput placeholder="Masukkan Username" style={styles.inputField}onChange={onChangeLuas} />
+							</View>
+							<View style={styles.inputContainer}>
+								<Text>Alamat</Text>
+								<TextInput placeholder="Masukkan Username" style={styles.inputField} onChange={onChangeAlamat}/>
+							</View>
+							<TambahTitikLahanSheet />
+							<Button title="Submit" onPress={submit}/>
 						</View>
-						<View style={styles.inputContainer}>
-							<Text>Luas</Text>
-							<TextInput placeholder="Masukkan Username" style={styles.inputField} />
-						</View>
-						<View style={styles.inputContainer}>
-							<Text>Alamat</Text>
-							<TextInput placeholder="Masukkan Username" style={styles.inputField} />
-						</View>
-						<TambahTitikLahanSheet />
-						<Button title="Submit" />
-					</View>
-				</BottomSheet>
-			</Portal>
-
+					</BottomSheet>
+				</PortalProvider>
 			<PortalHost name="custom_host" />
 		</>
 	)

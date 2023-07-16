@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Button, ActivityIndicator } from 'react-native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootStackParamList } from '@/types'
 import { useState } from 'react'
@@ -23,23 +23,60 @@ const styles = StyleSheet.create({
 	inputContainer: {
 		display: 'flex',
 		gap: 6,
+		shadowColor : '#202020',
+		shadowOffset : {
+			width : 0,
+			height : 1 
+		},
+		shadowOpacity : 0.4,
+		shadowRadius : 2,
+		borderRadius : 4
 	},
 	inputField: {
 		paddingHorizontal: 12,
 		paddingVertical: 9,
 		backgroundColor: '#FAFAFA',
+		borderRadius : 4
 	},
 	additionalContainer: {
 		display: 'flex',
+		justifyContent : "center",
 		flexDirection: 'row',
 	},
+	buttonContainer : {
+		backgroundColor : "#41644A",
+		borderRadius : 4,
+		display : "flex",
+		justifyContent: "center",
+		flexDirection : 'row',
+		shadowColor : '#202020',
+		shadowOffset : {
+			width : 0,
+			height : 2 
+		},
+		shadowOpacity : 1,
+		shadowRadius : 3
+	},
+	daftarText : {
+		color: "#E86A33",
+		fontWeight: "600",
+	},
+	loginText:{
+		color: "#FFFF",
+		fontWeight: "bold",
+		fontSize : 20,
+		padding : 10
+	}
 })
 
 export default function RegisterScreen({ navigation }: Props) {
 	const [user ,setUser] = useState<UserData>({email : "", password : ""})
+	const [loading,setLoading] = useState<Boolean>(false)
 	const {register,accessToken} = useAuthContext()
 	const handleRegister =async () => {
+		setLoading(true)
 		await register(user)
+		setLoading(false)
 		if(!accessToken){
 			console.log("Password atau Email Salah")
 		} else {
@@ -70,16 +107,23 @@ export default function RegisterScreen({ navigation }: Props) {
 			</View>
 			<View style={styles.inputContainer}>
 				<Text>Password</Text>
-				<TextInput placeholder="Masukkan Password" style={styles.inputField} />
+				<TextInput secureTextEntry={true} placeholder="Masukkan Password" style={styles.inputField} />
 			</View>
 			<View style={styles.inputContainer}>
 				<Text>Konfirmasi Password</Text>
-				<TextInput placeholder="Masukkan Password" style={styles.inputField}  onChangeText={handleChangePassword}/>
+				<TextInput secureTextEntry={true} placeholder="Masukkan Password" style={styles.inputField}  onChangeText={handleChangePassword}/>
 			</View>
-			<Button title="Register" onPress={handleRegister} />
-			<Text style={styles.additionalContainer}>
-				Sudah punya akun? <Button title="masuk disini" onPress={handleSwitchButton} />
-			</Text>
+				{loading ? (
+					<ActivityIndicator size="large" color="blue" />
+					): (
+					<View style={styles.buttonContainer}>
+						<Text style={styles.loginText} onPress={handleRegister}>Register</Text>
+					</View>
+				)}
+			<View style={styles.additionalContainer}>
+				<Text>Sudah punya akun? </Text>
+				<Text style={styles.daftarText} onPress={handleSwitchButton}>Masuk Disini</Text>
+			</View>
 		</View>
 	)
 }
