@@ -1,5 +1,5 @@
 # Gemastik-Harvestani 🌿
-![image](https://github.com/not-xygen/Gemastik-Harvestani/asset/Presentasi.png)
+![image](https://raw.githubusercontent.com/not-xygen/Gemastik-Harvestani/main/asset/Presentasi.png)
 Harvestani adalah sebuah inovasi terobosan di bidang pertanian yang bertujuan untuk menghadirkan perubahan positif dan signifikan bagi komunitas petani. Dengan memanfaatkan kemajuan teknologi dan kecerdasan buatan, aplikasi Harvestani dirancang untuk memberdayakan petani dengan alat dan informasi yang diperlukan untuk meningkatkan produktivitas, efisiensi, dan kesejahteraan mereka secara keseluruhan.
 
 ## Solusi Masalah 💪
