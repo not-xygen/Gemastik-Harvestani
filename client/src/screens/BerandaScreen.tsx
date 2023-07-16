@@ -2,8 +2,10 @@ import { StyleSheet, Text, View, ScrollView, Image, ImageBackground } from 'reac
 
 import { StatusBar } from 'expo-status-bar'
 import { useLahanContext } from '@/hooks/LahanHooks'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { LahanCard } from '@/components'
+import { WeatherProvider } from '@/context/WeatherProvider'
+import { useWeatherContext } from '@/hooks/WeatherHooks'
 
 const styles = StyleSheet.create({
 	container: {
@@ -80,9 +82,15 @@ const styles = StyleSheet.create({
 
 export default function BerandaScreen() {
 	const {show,allLahan} = useLahanContext()
+	const {get} = useWeatherContext()
+	const [weatherData, setWeatherData]= useState<any>()
 	useEffect(() => {
 		show()
+		get().then(data => {
+			setWeatherData(data)
+		})
 	},[])
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.headerContainer}>
@@ -99,7 +107,7 @@ export default function BerandaScreen() {
 				</ImageBackground>
 			</View>
 			<View style={styles.weatherContainer}>
-				<Text style={{ fontWeight: '700', fontSize: 18, color: '#202020' }}>Cuaca Hari Ini</Text>
+				<Text style={{ fontWeight: '700', fontSize: 18, color: '#202020' }}>Cuaca Hari Ini d {weatherData ? weatherData?.location.region : ""}</Text>
 				<View
 					style={{
 						display: 'flex',
@@ -124,9 +132,9 @@ export default function BerandaScreen() {
 								alignItems: 'center',
 							}}
 						>
-							<Text style={{ fontWeight: '700', fontSize: 24 }}>21°C</Text>
+							<Text style={{ fontWeight: '700', fontSize: 24 }}>{weatherData ? weatherData?.current.temp_c : ""}°C</Text>
 							<View style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-								<Text style={{ fontWeight: '300', fontSize: 12 }}>H: 23°C</Text>
+								<Text style={{ fontWeight: '300', fontSize: 12 }}>H: {weatherData?.current.humidity} RH</Text>
 								<Text style={{ fontWeight: '300', fontSize: 12 }}>L: 23°C</Text>
 							</View>
 						</View>
@@ -146,7 +154,7 @@ export default function BerandaScreen() {
 					>
 						<View style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
 							<Text style={{ fontSize: 12 }}>Kelembapan</Text>
-							<Text style={{ fontSize: 12, fontWeight: '700' }}>30%</Text>
+							<Text style={{ fontSize: 12, fontWeight: '700' }}>{weatherData?.current.humidity ? weatherData?.current.humidity : ""}%</Text>
 						</View>
 						<View style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
 							<Text style={{ fontSize: 12 }}>Curah Hujan</Text>
