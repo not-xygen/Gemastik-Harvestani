@@ -10,6 +10,8 @@ import {
 import { Router } from "express";
 import { Request, Response } from "express";
 import { User } from "@prisma/client";
+import { forbiddenResponse, notFoundResponse } from "#/response.js";
+import { needUser } from "#/middleware/auth.js";
 
 interface RegisterRequest {
   /**
@@ -31,6 +33,23 @@ interface RegisterResponse {
   token: string;
 }
 
+interface UserResponse {
+  id: string;
+  password: undefined;
+  email: string;
+  created_at: Date;
+  updated_at: Date;
+}
+
+// const userToResponse = typia.createPrune<UserResponse>();
+function userToResponse(user: User): UserResponse {
+  const pruneUser = typia.createAssertPrune<UserResponse>();
+  return pruneUser({
+    ...user,
+    password: undefined,
+  });
+}
+
 const checkRegister = typia.createAssert<RegisterRequest>();
 
 async function loginUser(res: Response, user: User) {
@@ -39,7 +58,11 @@ async function loginUser(res: Response, user: User) {
   const token = generateAccessToken(user);
 
   res.cookie("refresh-token", refreshToken.token);
-  res.json({ token, refreshToken: refreshToken.token });
+  res.json({
+    token,
+    refreshToken: refreshToken.token,
+    user: userToResponse(user),
+  });
 }
 
 export async function register(
@@ -58,7 +81,7 @@ export async function register(
       },
     });
 
-    return loginUser(res, user)
+    return loginUser(res, user);
   } catch (error) {
     res.status(500).json({ error: "An error occurred while signing up" });
   }
@@ -70,7 +93,7 @@ export async function login(req: Request, res: Response) {
   try {
     const user = await authenticateUser(email, password);
 
-    return loginUser(res, user)
+    return loginUser(res, user);
   } catch (error) {
     res.status(401).json({ error: "Invalid email or password" });
   }
@@ -96,12 +119,33 @@ export async function refreshToken(req: Request, res: Response) {
   }
 }
 
+export async function profile(req: Request, res: Response) {
+  if (!req.user) {
+    return forbiddenResponse(res);
+  }
+
+  const { userId } = req.user;
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+
+  if (user) {
+    return res.status(200).json(userToResponse(user));
+  } else {
+    return forbiddenResponse(res);
+  }
+}
+
 export function router() {
   const router = Router();
 
   router.post("/register", register);
   router.post("/login", login);
   router.post("/refresh", refreshToken);
+  router.get("/profile", needUser, profile);
 
   return router;
 }

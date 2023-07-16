@@ -24,7 +24,7 @@ npm run dev
 ## Register
 
 ```http
-POST /api/v1/register
+POST /api/v1/auth/register
 ```
 
 ### Request
@@ -43,14 +43,20 @@ token expire dalam 15 menit
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNWNjY2M1Yy0wODVjLTRhYzItODk2Zi03NGYxNDZmMzkzM2EiLCJpYXQiOjE2ODg3NzE1MjR9.VfTwZbVjiI73Jt3hx3VZ_DKjt0LcqB4hunJuRdP9Nvs",
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWZyZXNoVG9rZW5JZCI6IjdmYjA2Yjk3LWE4MzMtNGU2Ni1iOTdjLTg1ZGQyOWMwODk3NiIsInVzZXJJZCI6ImQ1Y2NjYzVjLTA4NWMtNGFjMi04OTZmLTc0ZjE0NmYzOTMzYSIsImlhdCI6MTY4ODc3MTUyNCwiZXhwIjoxNjg5Mzc2MzI0fQ.7MdgNJ8g0BVL1ForbYN3ehzJ2AFysiHwuEfM1ewB4Dk"
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWZyZXNoVG9rZW5JZCI6IjdmYjA2Yjk3LWE4MzMtNGU2Ni1iOTdjLTg1ZGQyOWMwODk3NiIsInVzZXJJZCI6ImQ1Y2NjYzVjLTA4NWMtNGFjMi04OTZmLTc0ZjE0NmYzOTMzYSIsImlhdCI6MTY4ODc3MTUyNCwiZXhwIjoxNjg5Mzc2MzI0fQ.7MdgNJ8g0BVL1ForbYN3ehzJ2AFysiHwuEfM1ewB4Dk",
+  "user": {
+    "id": "badf44be-37e9-4123-8db2-67202527c1c6",
+    "email": "test@example.com",
+    "created_at": "2023-07-12T07:15:56.773Z",
+    "updated_at": "2023-07-12T07:15:56.773Z"
+  }
 }
 ```
 
 ## Login
 
 ```http
-POST /api/v1/login
+POST /api/v1/auth/login
 ```
 
 ### Request
@@ -69,7 +75,13 @@ token expire dalam 15 menit
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNWNjY2M1Yy0wODVjLTRhYzItODk2Zi03NGYxNDZmMzkzM2EiLCJpYXQiOjE2ODg3NzE1MjR9.VfTwZbVjiI73Jt3hx3VZ_DKjt0LcqB4hunJuRdP9Nvs",
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWZyZXNoVG9rZW5JZCI6IjdmYjA2Yjk3LWE4MzMtNGU2Ni1iOTdjLTg1ZGQyOWMwODk3NiIsInVzZXJJZCI6ImQ1Y2NjYzVjLTA4NWMtNGFjMi04OTZmLTc0ZjE0NmYzOTMzYSIsImlhdCI6MTY4ODc3MTUyNCwiZXhwIjoxNjg5Mzc2MzI0fQ.7MdgNJ8g0BVL1ForbYN3ehzJ2AFysiHwuEfM1ewB4Dk"
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyZWZyZXNoVG9rZW5JZCI6IjdmYjA2Yjk3LWE4MzMtNGU2Ni1iOTdjLTg1ZGQyOWMwODk3NiIsInVzZXJJZCI6ImQ1Y2NjYzVjLTA4NWMtNGFjMi04OTZmLTc0ZjE0NmYzOTMzYSIsImlhdCI6MTY4ODc3MTUyNCwiZXhwIjoxNjg5Mzc2MzI0fQ.7MdgNJ8g0BVL1ForbYN3ehzJ2AFysiHwuEfM1ewB4Dk",
+  "user": {
+    "id": "badf44be-37e9-4123-8db2-67202527c1c6",
+    "email": "test@example.com",
+    "created_at": "2023-07-12T07:15:56.773Z",
+    "updated_at": "2023-07-12T07:15:56.773Z"
+  }
 }
 ```
 
@@ -90,6 +102,22 @@ Cookie: refresh-token=${refreshToken}
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNWNjY2M1Yy0wODVjLTRhYzItODk2Zi03NGYxNDZmMzkzM2EiLCJpYXQiOjE2ODg3NzE5MDMsImV4cCI6MTY4ODc3MjgwM30.eTnH7w9wd9xIQORTIG6OJbHzieR7TSuk3V7fwNjuXX0"
+}
+```
+
+## Profile
+
+```http
+GET /api/v1/auth/profile
+```
+
+### Response
+```json
+{
+    "id": "badf44be-37e9-4123-8db2-67202527c1c6",
+    "email": "test@example.com",
+    "created_at": "2023-07-12T07:15:56.773Z",
+    "updated_at": "2023-07-12T07:15:56.773Z"
 }
 ```
 
@@ -371,10 +399,10 @@ POST /api/v1/tanam/${id}/close
 ```
 
 ## Menghapus tanam
+
 ```http
 DELETE /api/v1/tanam/${id}
 ```
-
 
 ## Ambil Bibit
 
@@ -383,40 +411,42 @@ GET /api/v1/bibit
 ```
 
 ### Response
+
 jenis bisa berupa "Buah" atau "Sayuran"
+
 ```json
 {
-    "bibit": [
-        {
-            "id": "4cff4b68-5244-4056-8c1c-5bd2ba01e4b4",
-            "nama": "rice",
-            "deskripsi": "",
-            "harga_beli": 9776,
-            "jenis": "Buah",
-            "created_at": "2023-07-12T08:41:06.744Z",
-            "updated_at": "2023-07-12T08:41:06.744Z"
-        },
-    ]
+  "bibit": [
+    {
+      "id": "4cff4b68-5244-4056-8c1c-5bd2ba01e4b4",
+      "nama": "rice",
+      "deskripsi": "",
+      "harga_beli": 9776,
+      "jenis": "Buah",
+      "created_at": "2023-07-12T08:41:06.744Z",
+      "updated_at": "2023-07-12T08:41:06.744Z"
+    }
+  ]
 }
 ```
 
-## Rekomendasi Bibit 
-
+## Rekomendasi Bibit
 
 ```http
 POST /api/v1/bibit/recomendation
 ```
-### Request 
+
+### Request
 
 ```json
 {
-    "nitrogen" : 24,
-    "phosphorous" : 21,
-    "potash" : 43,
-    "temperature" : 20,
-    "humidity" : 41,
-    "ph": 6.5,
-    "rainfall" : 200
+  "nitrogen": 24,
+  "phosphorous": 21,
+  "potash": 43,
+  "temperature": 20,
+  "humidity": 41,
+  "ph": 6.5,
+  "rainfall": 200
 }
 ```
 
@@ -424,6 +454,6 @@ POST /api/v1/bibit/recomendation
 
 ```json
 {
-    "rekomendasi_bibit": "coffee"
+  "rekomendasi_bibit": "coffee"
 }
 ```
