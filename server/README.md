@@ -112,12 +112,13 @@ GET /api/v1/auth/profile
 ```
 
 ### Response
+
 ```json
 {
-    "id": "badf44be-37e9-4123-8db2-67202527c1c6",
-    "email": "test@example.com",
-    "created_at": "2023-07-12T07:15:56.773Z",
-    "updated_at": "2023-07-12T07:15:56.773Z"
+  "id": "badf44be-37e9-4123-8db2-67202527c1c6",
+  "email": "test@example.com",
+  "created_at": "2023-07-12T07:15:56.773Z",
+  "updated_at": "2023-07-12T07:15:56.773Z"
 }
 ```
 
@@ -427,6 +428,26 @@ jenis bisa berupa "Buah" atau "Sayuran"
       "updated_at": "2023-07-12T08:41:06.744Z"
     }
   ]
+}
+```
+
+## Ambil Bibit by nama
+
+```http
+GET /api/v1/bibit/nama/:nama
+```
+
+### Response
+
+```json
+{
+  "id": "4cff4b68-5244-4056-8c1c-5bd2ba01e4b4",
+  "nama": "rice",
+  "deskripsi": "",
+  "harga_beli": 9776,
+  "jenis": "Buah",
+  "created_at": "2023-07-12T08:41:06.744Z",
+  "updated_at": "2023-07-12T08:41:06.744Z"
 }
 ```
 
