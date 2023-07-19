@@ -17,7 +17,6 @@ export default function TambahTitikLahanSheet() {
 	const {pin} = useLahanContext()
 	const [currentLocation,setCurrentLocation] = useState<Location.LocationObject>()
 	const [markerCoordinate,setMarkerCoordinate] = useState<any>()
-
 	useEffect(() => {
 		getLocation()	
 	},[])
@@ -25,7 +24,6 @@ export default function TambahTitikLahanSheet() {
 	const getLocation = async () => {
 		try {
 			let {status} = await Location.requestForegroundPermissionsAsync()
-			console.log(status)
 			if(status !== "granted"){
 				return;
 			}
@@ -50,7 +48,7 @@ export default function TambahTitikLahanSheet() {
 
 	const submit = (event : any) => {
 		const latLot = {
-			"lat" : parseFloat(markerCoordinate.latitude),
+			"lat" : parseFloat(markerCoordinate.latitude) ,
 			"lon" : parseFloat(markerCoordinate.longitude)
 		}
 		pin(latLot)
@@ -69,9 +67,9 @@ export default function TambahTitikLahanSheet() {
 					enablePanDownToClose={true}
 				>
 					<View style={styles.container}>
-						<MapView style={styles.map} provider={PROVIDER_GOOGLE} onPress={onMapClick}>
+						<MapView style={styles.map} provider={PROVIDER_GOOGLE} onPress={onMapClick} >
 							<Marker
-								coordinate={markerCoordinate}
+								coordinate={!markerCoordinate ? ({"latitude" : 0 , "longitude" : 0}) : markerCoordinate}
 								title={"title"}
 								description={"description"}
 							/>
@@ -80,7 +78,7 @@ export default function TambahTitikLahanSheet() {
 					</View>
 				</BottomSheet>
 			</Portal>
-			<PortalHost name="custom_host" />
+			<PortalHost name="MapTitik" />
 		</>
 	)
 }

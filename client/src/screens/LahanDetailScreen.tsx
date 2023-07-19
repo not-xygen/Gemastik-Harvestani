@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, ScrollView, Image, ImageBackground } from 'react-native'
-
 import { StatusBar } from 'expo-status-bar'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootStackParamList } from '@/types'
 
 const styles = StyleSheet.create({
 	container: {
@@ -75,7 +76,8 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default function BerandaScreen() {
+
+export default function LahanDetailScreen() {
 	return (
 		<View style={styles.container}>
 			<View style={styles.headerContainer}>
