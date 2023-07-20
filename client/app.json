@@ -20,7 +20,7 @@
       },
       "config" : {
         "googleMaps" : {
-          "apiKey" : "authorization"
+          "apiKey" : ""
         }
       },
       "permission" : "ACCESS_FINE_LOCATION",

@@ -1,16 +1,23 @@
+import { DataLahanDetail } from "@/types";
 import { createContext } from "react"
 
 export interface LahanData {
-    user_id : string
-    nama : string
-    luas : number
-    alamat : string
-    
+
 }
 export interface LatLot {
     lat : number,
     lon : number
 }
+
+export interface RecomendationParams {
+    nitrogen :number;
+    phosphorous : number
+    potash : number
+    temperature : number
+    humidity :number
+    ph : number
+    rainfall : number
+  }
 
 export interface LahanContextProps {
     add : (params : LahanData) => Promise<void>
@@ -20,7 +27,10 @@ export interface LahanContextProps {
     show: () => Promise<void>
     pin : (params : any) => Promise<void>
     allLahan : any
-
+    recomen : any
+    recomendation : (params:RecomendationParams ) => Promise<void>
+    detailLahan : DataLahanDetail
+    setDetailLahan : (params: DataLahanDetail) => Promise<void>
 }
 
 
@@ -32,5 +42,18 @@ export const LahanContext = createContext<LahanContextProps>({
     update : async () => {},
     show : async () => {},
     pin : async() => {},
-    allLahan : ""
+    recomendation: async() => {},
+    allLahan : Array,
+    recomen : "",
+    detailLahan : {
+        user_id : "",
+        nama: "",
+        luas : "",
+        alamat : "",
+        lat : 0,
+        lon : 0,
+        created_at : "",
+        update_at : "",
+    },
+    setDetailLahan : async() => {} 
 })

@@ -1,7 +1,6 @@
-import { StyleSheet, View } from 'react-native'
 import { useAuthContext } from '@/hooks/AuthHooks'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { LoginScreen, SplashScreen, RegisterScreen, LahanDetailScreen } from '@/screens'
+import { LoginScreen, SplashScreen, RegisterScreen } from '@/screens'
 import { NavigationContainer } from '@react-navigation/native'
 import { useEffect, useState } from 'react'
 import { NavbarLayout } from '@/layout/index'
@@ -9,7 +8,7 @@ import { NavbarLayout } from '@/layout/index'
 const Stack = createNativeStackNavigator()
           
 
-export default function RootLayoutScreen() {
+export default function RootLayoutScreen( ) {
 	const {accessToken} = useAuthContext()
 	const [token,setToken] = useState<any>()
 	useEffect(() => { 

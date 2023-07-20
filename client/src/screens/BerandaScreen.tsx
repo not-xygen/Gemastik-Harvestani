@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, Image, ImageBackground } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Image, ImageBackground, Pressable } from 'react-native'
 
 import { StatusBar } from 'expo-status-bar'
 import { useLahanContext } from '@/hooks/LahanHooks'
@@ -6,7 +6,9 @@ import { useEffect, useState } from 'react'
 import { LahanCard } from '@/components'
 import { WeatherProvider } from '@/context/WeatherProvider'
 import { useWeatherContext } from '@/hooks/WeatherHooks'
-
+import { useAuthContext } from '@/hooks/AuthHooks'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { DataLahanDetail, RootStackParamList } from '@/types'
 const styles = StyleSheet.create({
 	container: {
 		display: 'flex',
@@ -80,8 +82,13 @@ const styles = StyleSheet.create({
 	},
 })
 
-export default function BerandaScreen() {
-	const {show,allLahan} = useLahanContext()
+export type NavigationProps ={
+    navigation : NativeStackNavigationProp<RootStackParamList, "LahanDetail","BerandaScreen">
+}
+
+export default function BerandaScreen({navigation} : NavigationProps) {
+	const {show,allLahan,setDetailLahan} = useLahanContext()
+	const {userData} = useAuthContext()
 	const {get} = useWeatherContext()
 	const [weatherData, setWeatherData]= useState<any>()
 	useEffect(() => {
@@ -99,7 +106,7 @@ export default function BerandaScreen() {
 					style={styles.headerBackground}
 				>
 					<View style={styles.headerOverlay} />
-					<Text style={styles.headerTitle}>Hi, JohnDoe47</Text>
+					<Text style={styles.headerTitle}>Hi, {userData.substring(0,userData.indexOf('@'))}</Text>
 					<Image
 						source={require('../../assets/placeholder_profile_picture.png')}
 						style={styles.headerProfilePicture}
@@ -107,7 +114,7 @@ export default function BerandaScreen() {
 				</ImageBackground>
 			</View>
 			<View style={styles.weatherContainer}>
-				<Text style={{ fontWeight: '700', fontSize: 18, color: '#202020' }}>Cuaca Hari Ini d {weatherData ? weatherData?.location.region : ""}</Text>
+				<Text style={{ fontWeight: '700', fontSize: 18, color: '#202020' }}>Cuaca Hari Ini di {weatherData ? weatherData?.location.region : "Api Key Nya Kena Limit Lol"}</Text>
 				<View
 					style={{
 						display: 'flex',
@@ -173,11 +180,17 @@ export default function BerandaScreen() {
 				</Text>
 				<ScrollView style={{ height: '100%', paddingHorizontal: 20, paddingVertical: 12 }}>
 					{!allLahan ? <>
-						</> : <>
-						{allLahan.lahan.map((data : any) => {
-								return <LahanCard nama={data.nama} />
+						</> :  <>
+						{allLahan.lahan.map((data : DataLahanDetail) => {
+								return (
+									<Pressable onPress={()=> {
+										setDetailLahan(data)
+										navigation.navigate('LahanDetail')
+										}}>
+										<LahanCard nama={data.nama} luas={data.luas} alamat={data.alamat} lat={data.lat} lon={data.lon} user_id={data.user_id} created_at={data.created_at} update_at={data.update_at}/>
+									</Pressable>
+								)
 							})}</>}
-					
 				</ScrollView>
 			</View>
 		</View>

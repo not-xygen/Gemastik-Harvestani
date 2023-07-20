@@ -1,4 +1,3 @@
-import RootLayoutScreen from '../layout/RootLayoutScreen';
 export type RootStackParamList = {
 	SplashScreen: undefined
 	LoginScreen: undefined
@@ -6,4 +5,19 @@ export type RootStackParamList = {
 	NavbarLayout: undefined
 	LahanDetailScreen: undefined
 	RootLayoutScreen : undefined
+	LahanCard : undefined
+	LahanDetail : undefined
+	BerandaScreen : undefined
+	
+}
+
+export type DataLahanDetail = {
+	user_id : string
+	nama: string
+	luas : string
+	alamat : string
+	lat : number
+	lon : number
+	created_at : string
+	update_at : string
 }

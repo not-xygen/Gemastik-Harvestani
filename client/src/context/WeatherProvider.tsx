@@ -11,7 +11,6 @@ export const WeatherProvider : React.FC<any> = ({children}) => {
     const getLocation = async () => {
       try {
         let {status} = await Location.requestForegroundPermissionsAsync()
-        console.log(status)
         if(status !== "granted"){
           return;
         }

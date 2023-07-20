@@ -3,11 +3,14 @@ import { AuthContext, UserData } from './AuthContext';
 
 interface LoginResponse {
     accessToken : String,
+    userData : String,
     token : String,
 }
 
 export const AuthProvider: React.FC<any> = ({children}) => {
     const [accessToken , setAccessToken] = useState<String>("")
+    const [userData ,setUserData] = useState<String>("")
+
     const login = async (params : UserData) => {
 
         await fetch('https://gemastik-node-ygq37pugfa-et.a.run.app/api/v1/auth/login', {
@@ -23,6 +26,7 @@ export const AuthProvider: React.FC<any> = ({children}) => {
             if(response.ok) {
                 response.json().then(async (accessToken) => {
                     const accesstoken = await accessToken
+                    setUserData(accessToken.user.email)
                     setAccessToken(accesstoken.token)
                 });
             } else {
@@ -58,7 +62,7 @@ export const AuthProvider: React.FC<any> = ({children}) => {
     }
 
     return(
-        <AuthContext.Provider value={{accessToken ,login,logout,register}}>
+        <AuthContext.Provider value={{accessToken ,login,logout,register,userData}}>
             {children}
         </AuthContext.Provider>
     )

@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View, ScrollView, Image, TextInput } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Image, TextInput, Button, Pressable } from 'react-native'
 import { TambahLahanSheet,LahanCard } from '@/components'
-import { LahanProvider } from '@/context/LahanProvider'
 import { useLahanContext } from '@/hooks/LahanHooks'
 import { useEffect } from 'react'
-import { LahanData } from '../context/LahanContext';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { DataLahanDetail, RootStackParamList } from '@/types'
 
 const styles = StyleSheet.create({
 	container: {
@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
 		width: '100%',
 		backgroundColor: '#fff',
 		paddingTop: 60,
-		position: 'relative',
+		position: 'absolute',
+		zIndex:0
 	},
 	lahanContainer: {
 		height: 'auto',
@@ -29,44 +30,42 @@ const styles = StyleSheet.create({
 		borderRadius: 8,
 	},
 })
-
-export default function ManajemenLahanScreen() {
-	const {show,allLahan} = useLahanContext()
+export type NavigationProps ={
+    navigation : NativeStackNavigationProp<RootStackParamList, "LahanDetail","BerandaScreen">
+}
+export default function ManajemenLahanScreen({navigation} : NavigationProps) {
+	const {show,allLahan,setDetailLahan} = useLahanContext()
 	useEffect(() => {
 		show()
 	},[])
 	return (
-		<>
 			<View style={styles.container}>
-				<View
-					style={{
-						position: 'absolute',
-						width: '100%',
-						height: '100%',
-						zIndex: 2,
-					}}
-				>
-						<TambahLahanSheet />
-				</View>
-
+				<TambahLahanSheet />
 				<View style={{ paddingHorizontal: 20 }}>
 					<TextInput placeholder="Cari Lahan" style={styles.inputField} />
 				</View>
 				<View style={styles.lahanContainer}>
+					
 					<Text
 						style={{ color: '#202020', fontWeight: '700', fontSize: 16, paddingHorizontal: 20 }}
 					>
 						Lahan-mu
 					</Text>
-					<ScrollView style={{ height: '100%', paddingHorizontal: 20, paddingVertical: 12 }}>
+					<ScrollView style={{ height: '100%', paddingHorizontal: 20, paddingVertical: 12  }}>
 						{!allLahan ? <>
 						</> : <>
-						{allLahan.lahan.map((data : any) => {
-								return <LahanCard nama={data.nama} />
+						{allLahan.lahan.map((data : DataLahanDetail) => {
+								return (
+									<Pressable onPress={()=> {
+										setDetailLahan(data)
+										navigation.navigate('LahanDetail')
+										}}>
+										<LahanCard nama={data.nama} luas={data.luas} alamat={data.alamat} lat={data.lat} lon={data.lon} user_id={data.user_id} created_at={data.created_at} update_at={data.update_at}/>
+									</Pressable>
+								)
 							})}</>}
 					</ScrollView>
 				</View>
 			</View>
-		</>
 	)
 }

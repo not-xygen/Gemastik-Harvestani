@@ -11,15 +11,14 @@ import {
 	NativeSyntheticEvent,
 	TextInputChangeEventData,
 } from 'react-native'
+import { PortalHost, PortalProvider } from '@gorhom/portal'
 import { TambahTitikLahanSheet } from '@/components'
 import { useLahanContext } from '@/hooks/LahanHooks'
-import { ActivityIndicator } from 'react-native'
 
-export default function TambahLahanSheet() {
+export default function TambahTanaman() {
 	const bottomSheetModalRef = React.useRef<BottomSheetModal>(null);
 	const [lahanData,setLahanData] = React.useState<any>()
-	const snapPoints = React.useMemo(() => ['50%','90%'], [])
-	const [loading,setLoading]= React.useState<Boolean>(false)
+	const snapPoints = React.useMemo(() => ['50%', '90%'], [])
 	const {add} = useLahanContext()
 	const handleSheetChanges = React.useCallback((index: number) => {
 		console.log('handleSheetChanges', index)
@@ -51,29 +50,21 @@ export default function TambahLahanSheet() {
 		})
 	}
 
-	const submit = async () => {
-		setLoading(true)
-		await add(lahanData)
-		setLoading(false)
+	const submit = () => {
+		add(lahanData)
 	}
 
 	return (
-		<View style={{
-			position: 'absolute',
-			zIndex:1,
-			bottom: 90,
-			right: 90
-		}}>
+		<View>
 			<TouchableWithoutFeedback onPress={onAddButtonPress}>
-				<Image
-					source={{ uri: 'https://img.icons8.com/ios/50/000000/plus-math--v1.png' }}
-					style={{
-						padding: 30,
-						backgroundColor: '#41644A',
-						borderRadius: 100,
-						position: 'absolute',
-					}}
-				/>
+                <Text style={{
+                        backgroundColor: "#41644A",
+                        paddingLeft : "40%",
+                        paddingTop: 6.3,
+                        paddingBottom: 6.3,
+                        color : "white"  
+
+                    }}>Tambah Tanaman</Text>
 			</TouchableWithoutFeedback>
 					<BottomSheetModal
 						ref={bottomSheetModalRef}
@@ -95,14 +86,8 @@ export default function TambahLahanSheet() {
 								<Text>Alamat</Text>
 								<TextInput placeholder="Masukkan Username" style={styles.inputField} onChange={onChangeAlamat}/>
 							</View>
-							<TambahTitikLahanSheet />	
-							{loading ? (
-								<ActivityIndicator size="large" color="#00ff00" />
-							) : (
-								<View style={styles.buttonContainer}>
-									<Text style={styles.loginText} onPress={submit}>Submit</Text>
-								</View>
-							)}
+							<TambahTitikLahanSheet />
+							<Button title="Submit" onPress={submit}/>
 						</View>
 					</BottomSheetModal>
 		</View>
@@ -111,8 +96,9 @@ export default function TambahLahanSheet() {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		padding: 24,
+        width:'100%',
+        height : '100%'
 	},
 	contentContainer: {
 		flex: 1,
@@ -134,29 +120,5 @@ const styles = StyleSheet.create({
 	additionalContainer: {
 		display: 'flex',
 		flexDirection: 'row',
-	},
-	buttonContainer : {
-		backgroundColor : "#41644A",
-		borderRadius : 4,
-		display : "flex",
-		justifyContent: "center",
-		flexDirection : 'row',
-		shadowColor : '#202020',
-		shadowOffset : {
-			width : 0,
-			height : 2 
-		},
-		shadowOpacity : 1,
-		shadowRadius : 3
-	},
-	daftarText : {
-		color: "#E86A33",
-		fontWeight: "600",
-	},
-	loginText:{
-		color: "#FFFF",
-		fontWeight: "bold",
-		fontSize : 20,
-		padding : 10
 	},
 })
