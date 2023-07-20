@@ -2,10 +2,10 @@ import { needUser } from "#/middleware/auth.js";
 import prisma from "#/prisma.js";
 import { Router } from "express";
 import { Request, Response } from "express-serve-static-core";
-import axios, { Axios, AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import typia from "typia";
-import { queryToWhere } from "#/util";
-import { notFoundResponse } from "#/response";
+import { queryToWhere } from "#/util.js";
+import { notFoundResponse } from "#/response.js";
 
 interface AIBibitResponse {
   plan_recomendation: String;
