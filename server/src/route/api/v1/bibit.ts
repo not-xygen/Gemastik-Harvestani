@@ -4,15 +4,38 @@ import { Router } from "express";
 import { Request, Response } from "express-serve-static-core";
 import axios, { Axios, AxiosResponse } from "axios";
 import typia from "typia";
+import { queryToWhere } from "#/util";
+import { notFoundResponse } from "#/response";
 
 interface AIBibitResponse {
   plan_recomendation: String;
 }
 
 export async function index(req: Request, res: Response) {
-  const bibit = await prisma.bibit.findMany({});
+  const { nama } = req.query;
+  const bibit = await prisma.bibit.findMany({
+    where: {
+      nama: queryToWhere(nama),
+    },
+  });
 
   res.status(200).json({ bibit });
+}
+
+export async function showNama(req: Request, res: Response) {
+  const { nama } = req.params;
+
+  const model = await prisma.bibit.findFirst({
+    where: {
+      nama
+    },
+  });
+
+  if (model) {
+    return res.status(200).json(model);
+  } else {
+    return notFoundResponse(res, "bibit");
+  }
 }
 
 interface BibitAiRequest {
@@ -70,6 +93,7 @@ export function router() {
   const router = Router();
 
   router.get("/", index);
+  router.get("/nama/:nama", showNama);
   router.post("/recomendation", needUser, rekomendasiBibit);
 
   return router;
