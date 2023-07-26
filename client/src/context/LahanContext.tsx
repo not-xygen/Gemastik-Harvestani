@@ -19,6 +19,17 @@ export interface RecomendationParams {
     rainfall : number
   }
 
+export interface Bibit {
+    id: string
+    nama: string
+    deskripsi: string
+    harga_beli: number
+    jenis: string
+    created_at: string
+    updated_at: string
+}
+
+
 export interface LahanContextProps {
     add : (params : LahanData) => Promise<void>
     del : (params : LahanData) => Promise<void>
@@ -31,6 +42,8 @@ export interface LahanContextProps {
     recomendation : (params:RecomendationParams ) => Promise<void>
     detailLahan : DataLahanDetail
     setDetailLahan : (params: DataLahanDetail) => Promise<void>
+    getBibit : () => Promise<Bibit[]>
+    tanam : (params : any) => Promise<void> 
 }
 
 
@@ -46,6 +59,7 @@ export const LahanContext = createContext<LahanContextProps>({
     allLahan : Array,
     recomen : "",
     detailLahan : {
+        id : "",
         user_id : "",
         nama: "",
         luas : "",
@@ -55,5 +69,7 @@ export const LahanContext = createContext<LahanContextProps>({
         created_at : "",
         update_at : "",
     },
-    setDetailLahan : async() => {} 
+    setDetailLahan : async() => {} ,
+    getBibit : async () => [],
+    tanam : async() => {}
 })
