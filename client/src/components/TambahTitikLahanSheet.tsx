@@ -35,7 +35,6 @@ export default function TambahTitikLahanSheet() {
 	}
 
 	const handleSheetChanges = React.useCallback((index: number) => {
-		console.log('handleSheetChanges', index)
 	}, [])
 
 	const onAddButtonPress = () => {

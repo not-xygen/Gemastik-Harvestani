@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 	},
 	headerTitle: {
+		display : 'flex',
 		fontSize: 24,
 		fontWeight: 'bold',
 		color: '#E86A33',
@@ -82,7 +83,18 @@ const styles = StyleSheet.create({
 
 export default function LahanDetail() {
 	const {detailLahan} = useLahanContext()
-	console.log(detailLahan)
+	const convertISODate = (isoDate: string): string => {
+		const months: string[] = [
+		  'January', 'February', 'March', 'April', 'May', 'June',
+		  'July', 'August', 'September', 'October', 'November', 'December'
+		];
+	  
+		const date = new Date(isoDate);
+		const day: number = date.getDate();
+		const month: string = months[date.getMonth()];
+		const year: number = date.getFullYear();
+		return `${day} ${month} ${year}`
+	  };
     return (
         <View style={styles.container}>
         <View style={styles.headerContainer}>
@@ -91,6 +103,7 @@ export default function LahanDetail() {
                 style={styles.headerBackground}
             >
                 <View style={styles.headerOverlay} />
+					<MaterialCommunityIcons name="map-marker" size={54} color="#E86A33" />
                 <Text style={styles.headerTitle}>
 					{detailLahan.nama}
 				</Text>
@@ -123,16 +136,16 @@ export default function LahanDetail() {
 				<View  style={styles.iconContainer}>
 					<MaterialCommunityIcons name="calendar" size={54} color="#48742C" />
 					<Text>Ditanam</Text>
-					<Text>3 Maret 2023</Text>
+					<Text>{convertISODate(detailLahan.created_at)}</Text>
 				</View>
 				<View style={styles.iconContainer}>
 					<MaterialCommunityIcons name="coolant-temperature" size={54} color="#ECB476" />
-					<Text>Ditanam</Text>
-					<Text>3 Maret 2023</Text>
+					<Text>Temperatur</Text>
+					<Text>32</Text>
 				</View>
 				<View style={styles.iconContainer}>
 					<MaterialCommunityIcons name="water" size={54} color="#229BDE" />
-					<Text>Ditanam</Text>
+					<Text>Kelembapan</Text>
 					<Text>3 Maret 2023</Text>
 				</View>
 			</View>

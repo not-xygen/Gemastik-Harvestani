@@ -12,6 +12,7 @@ export type RootStackParamList = {
 }
 
 export type DataLahanDetail = {
+	id : string
 	user_id : string
 	nama: string
 	luas : string
