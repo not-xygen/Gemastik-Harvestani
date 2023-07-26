@@ -22,7 +22,6 @@ export default function TambahLahanSheet() {
 	const [loading,setLoading]= React.useState<Boolean>(false)
 	const {add} = useLahanContext()
 	const handleSheetChanges = React.useCallback((index: number) => {
-		console.log('handleSheetChanges', index)
 	}, [])
 
 	const onAddButtonPress = React.useCallback(() => {

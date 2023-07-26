@@ -1,7 +1,7 @@
 import { DataLahanDetail } from '@/types'
-import { StyleSheet, Text, View, ScrollView, Image, TextInput } from 'react-native'
+import {Text, View,Image } from 'react-native'
 
-export default function LahanCard({nama,luas,alamat,lat,lon} : DataLahanDetail){
+export default function LahanCard({nama,luas,alamat,lat,lon,id} : DataLahanDetail){
     return (
         <View>
                 <View
